@@ -16,7 +16,7 @@ public class Object_TrailArticle {
 				sName = name;
 				
 				//get the referenced photos
-				arReferencedPhotos = new ArrayList();
+				arPhotos = new ArrayList();
 				JSONArray arRP = json.getJSONArray("referencedphotos");				
 			    for(int i = 0 ; i < arRP.length(); i++){
 			    	JSONArray arJSONPhoto = arRP.getJSONArray(i);
@@ -26,7 +26,21 @@ public class Object_TrailArticle {
 			    		photo.mURL120px = arJSONPhoto.getString(1);
 			    		photo.mCaption = Object_TrailArticle.urlDecode(arJSONPhoto.getString(2));
 			    		photo.mSection = arJSONPhoto.getString(3);
-			    		arReferencedPhotos.add(photo);
+			    		arPhotos.add(photo);
+			    	}
+			    }
+			    
+			    //get the gallery photos
+			    arRP = json.getJSONArray("galleryphotos");				
+			    for(int i = 0 ; i < arRP.length(); i++){
+			    	JSONArray arJSONPhoto = arRP.getJSONArray(i);
+			    	if (arJSONPhoto.length() >= 2){
+			    		Object_TrailPhoto photo = new Object_TrailPhoto();
+			    		photo.mURL = arJSONPhoto.getString(0);
+			    		photo.mURL120px = arJSONPhoto.getString(1);
+			    		photo.mCaption = "";
+			    		photo.mSection = "";
+			    		arPhotos.add(photo);
 			    	}
 			    }
 				
@@ -63,5 +77,5 @@ public class Object_TrailArticle {
 	public static boolean bSaved = false;
 	public static JSONObject jsonSaved = null;
 	
-	public static ArrayList<Object_TrailPhoto> arReferencedPhotos;
+	public static ArrayList<Object_TrailPhoto> arPhotos;
 }

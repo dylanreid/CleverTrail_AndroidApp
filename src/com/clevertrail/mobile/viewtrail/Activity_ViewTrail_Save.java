@@ -90,7 +90,7 @@ public class Activity_ViewTrail_Save extends Activity {
 		FileCache fc = new FileCache(this.getApplicationContext());
 		
 		//delete files
-		ArrayList<Object_TrailPhoto> photos = Object_TrailArticle.arReferencedPhotos;
+		ArrayList<Object_TrailPhoto> photos = Object_TrailArticle.arPhotos;
 		for (int i = 0; i < photos.size(); i++) {
 			Object_TrailPhoto photo = photos.get(i);
 			File f = fc.getFile(photo.mURL);
@@ -155,7 +155,7 @@ public class Activity_ViewTrail_Save extends Activity {
 				bSavePhotos = cbSavePhotos.isChecked();
 				if (bSavePhotos) {
 					ImageLoader imageLoader = new ImageLoader(mContext);
-					ArrayList<Object_TrailPhoto> photos = Object_TrailArticle.arReferencedPhotos;
+					ArrayList<Object_TrailPhoto> photos = Object_TrailArticle.arPhotos;
 
 					for (int i = 0; i < photos.size(); i++) {
 						int incrementSize = 100 / photos.size();

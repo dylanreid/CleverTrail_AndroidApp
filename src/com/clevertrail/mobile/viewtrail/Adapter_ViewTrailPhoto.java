@@ -28,7 +28,7 @@ public class Adapter_ViewTrailPhoto extends BaseAdapter {
 	}
 
 	public int getCount() {
-		ArrayList<Object_TrailPhoto> arReferencedPhotos = Object_TrailArticle.arReferencedPhotos; 
+		ArrayList<Object_TrailPhoto> arReferencedPhotos = Object_TrailArticle.arPhotos; 
 		return arReferencedPhotos.size();
 	}
 
@@ -48,12 +48,16 @@ public class Adapter_ViewTrailPhoto extends BaseAdapter {
 		TextView text = (TextView) vi.findViewById(R.id.textitem);
 		ImageView image = (ImageView) vi.findViewById(R.id.imageitem);
 		
-		ArrayList<Object_TrailPhoto> arReferencedPhotos = Object_TrailArticle.arReferencedPhotos;
+		ArrayList<Object_TrailPhoto> arReferencedPhotos = Object_TrailArticle.arPhotos;
 
 		if (arReferencedPhotos.size() >= position) {
 			Object_TrailPhoto photo = arReferencedPhotos.get(position);
 			imageLoader.DisplayImage(photo.mURL120px, image);
-			text.setText(photo.mCaption);
+			if (photo.mCaption != "") {
+				text.setText(photo.mCaption);
+			} else {
+				text.setText("[Click for larger image]");
+			}
 		}
 
 		return vi;

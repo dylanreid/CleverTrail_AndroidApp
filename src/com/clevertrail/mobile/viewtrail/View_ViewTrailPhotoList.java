@@ -36,7 +36,7 @@ public class View_ViewTrailPhotoList extends ListView {
 			public void onItemClick(AdapterView arg0, View arg1, int position,
 					long arg3) {
 				
-				ArrayList<Object_TrailPhoto> arReferencedPhotos = Object_TrailArticle.arReferencedPhotos;
+				ArrayList<Object_TrailPhoto> arReferencedPhotos = Object_TrailArticle.arPhotos;
 
 				if (arReferencedPhotos.size() > position && mActivity != null) {
 					Intent i = new Intent(mActivity,

@@ -26,7 +26,7 @@ public class Activity_DisplayPhoto extends Activity {
         
         //if the article was saved, use the caching mechanism
         if (bSaved){
-        	imageLoader.DisplayImage(sURL, image);
+        	imageLoader.DisplayImage(sURL, image); 
         } else {
         	Bitmap bitmap = imageLoader.getBitmapFromWeb(sURL);
         	image.setImageBitmap(bitmap);
