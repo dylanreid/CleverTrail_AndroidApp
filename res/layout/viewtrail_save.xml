@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#E9F0EC" >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:padding="5dp" >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="10dip" />
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Current Status: " />
+
+            <TextView
+                android:id="@+id/txtSaveStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Unknown"
+                 />
+            
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="10dip" />
+
+        <CheckBox
+            android:id="@+id/chkSavePhotos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Save trail photos (takes up more space)"
+            android:textColor="#000"
+            android:textSize="8dip" />
+
+        <Button
+            android:id="@+id/btnSaveTrail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save This Trail" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="20dip" />
+
+        <Button
+            android:id="@+id/btnSaveGoToSavedTrails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Go To My Saved Trails" />
+    </LinearLayout>
+
+</ScrollView>

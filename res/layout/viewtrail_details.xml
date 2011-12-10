@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollView01"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+    
+	                    
+
+    <TableLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:stretchColumns="0" >
+
+        <TableRow >
+        <ImageView
+                    android:id="@+id/ivOverview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_span="2" 
+                    android:layout_weight="1" />
+        </TableRow>
+        
+        <TableRow >
+
+            <FrameLayout
+                android:layout_height="wrap_content"
+                android:layout_span="2" >
+
+                <Button
+                    android:id="@+id/btnExpandCollapse1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Expand All" />
+            </FrameLayout>
+        </TableRow>
+
+
+
+        <TableRow >
+
+            <Button
+                android:id="@+id/btnOverview"
+                style="@style/ViewTrailSectionButton"
+                android:text="Hide" />
+
+            <TextView
+                style="@style/ViewTrailSectionHeaderText"
+                android:text=" Overview" />
+        </TableRow>
+
+        <TableRow >
+
+            <TextView
+                android:id="@+id/txtOverview"
+                style="@style/ViewTrailSectionMainText"
+                android:visibility="visible" />
+        </TableRow>
+
+        <TableRow >
+
+            <TextView android:layout_height="10dip" />
+        </TableRow>
+
+        <TableRow >
+
+            <Button
+                android:id="@+id/btnDirections"
+                style="@style/ViewTrailSectionButton" />
+
+            <TextView
+                style="@style/ViewTrailSectionHeaderText"
+                android:text=" Directions" />
+        </TableRow>
+
+        <TableRow >
+
+            <TextView
+                android:id="@+id/txtDirections"
+                style="@style/ViewTrailSectionMainText" />
+        </TableRow>
+
+        <TableRow >
+
+            <TextView android:layout_height="10dip" />
+        </TableRow>
+
+        <TableRow >
+
+            <Button
+                android:id="@+id/btnDescription"
+                style="@style/ViewTrailSectionButton" />
+
+            <TextView
+                style="@style/ViewTrailSectionHeaderText"
+                android:text=" Description" />
+        </TableRow>
+
+        <TableRow >
+
+            <TextView
+                android:id="@+id/txtDescription"
+                style="@style/ViewTrailSectionMainText" />
+        </TableRow>
+
+        <TableRow >
+
+            <TextView android:layout_height="10dip" />
+        </TableRow>
+
+        <TableRow >
+
+            <Button
+                android:id="@+id/btnConditions"
+                style="@style/ViewTrailSectionButton" />
+
+            <TextView
+                style="@style/ViewTrailSectionHeaderText"
+                android:text=" Conditions &amp; Hazards" />
+        </TableRow>
+
+        <TableRow >
+
+            <TextView
+                android:id="@+id/txtConditions"
+                style="@style/ViewTrailSectionMainText" />
+        </TableRow>
+
+        <TableRow >
+
+            <TextView android:layout_height="10dip" />
+        </TableRow>
+
+        <TableRow >
+
+            <Button
+                android:id="@+id/btnFees"
+                style="@style/ViewTrailSectionButton" />
+
+            <TextView
+                style="@style/ViewTrailSectionHeaderText"
+                android:text=" Fees, Permits &amp; Restrictions" />
+        </TableRow>
+
+        <TableRow >
+
+            <TextView
+                android:id="@+id/txtFees"
+                style="@style/ViewTrailSectionMainText" />
+        </TableRow>
+
+        <TableRow >
+
+            <TextView android:layout_height="10dip" />
+        </TableRow>
+
+        <TableRow >
+
+            <Button
+                android:id="@+id/btnAmenities"
+                style="@style/ViewTrailSectionButton" />
+
+            <TextView
+                style="@style/ViewTrailSectionHeaderText"
+                android:text=" Amenities" />
+        </TableRow>
+
+        <TableRow >
+
+            <TextView
+                android:id="@+id/txtAmenities"
+                style="@style/ViewTrailSectionMainText" />
+        </TableRow>
+
+        <TableRow >
+
+            <TextView android:layout_height="10dip" />
+        </TableRow>
+
+        <TableRow >
+
+            <Button
+                android:id="@+id/btnMisc"
+                style="@style/ViewTrailSectionButton" />
+
+            <TextView
+                style="@style/ViewTrailSectionHeaderText"
+                android:text=" Miscellaneous" />
+        </TableRow>
+
+        <TableRow >
+
+            <TextView
+                android:id="@+id/txtMisc"
+                style="@style/ViewTrailSectionMainText" />
+        </TableRow>
+
+        <TableRow >
+
+            <FrameLayout
+                android:layout_height="wrap_content"
+                android:layout_span="2" >
+
+                <Button
+                    android:id="@+id/btnExpandCollapse2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Expand All" />
+            </FrameLayout>
+        </TableRow>
+    </TableLayout>
+
+</ScrollView>
