@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#E9F0EC" >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <ImageView
+                style="@style/MainMenuImage"
+                android:src="@drawable/emptyimage" />
+
+            <TextView
+                style="@style/MainMenuText"                                
+                android:text="Find Trails By Map" />
+        </LinearLayout>
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <ImageView
+                style="@style/MainMenuImage"
+                android:src="@drawable/emptyimage" />
+
+            <TextView
+                style="@style/MainMenuText"
+                android:text="Find Trails By Name" />
+        </LinearLayout>
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <ImageView
+                style="@style/MainMenuImage"
+                android:src="@drawable/emptyimage" />
+
+            <TextView
+                style="@style/MainMenuText"
+                android:text="View Your Saved Trails" />
+        </LinearLayout>
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <ImageView
+                style="@style/MainMenuImage"
+                android:src="@drawable/emptyimage" />
+
+            <TextView
+                style="@style/MainMenuText"
+                android:text="Track Your Trail Route" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>
