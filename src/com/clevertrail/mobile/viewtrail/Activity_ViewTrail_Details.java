@@ -80,7 +80,7 @@ public class Activity_ViewTrail_Details extends Activity {
 					(TextView) findViewById(R.id.txtDirections),
 					(Button) findViewById(R.id.btnDirections));
 		}
-	};
+	}; 
 
 	private OnClickListener onclickDescriptionButton = new OnClickListener() {
 		public void onClick(View v) {
