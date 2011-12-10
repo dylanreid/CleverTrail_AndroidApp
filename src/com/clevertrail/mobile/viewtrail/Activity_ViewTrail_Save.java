@@ -32,7 +32,7 @@ public class Activity_ViewTrail_Save extends Activity {
 	private ProgressDialog mDialog;
 	public static Activity_ViewTrail_Save mViewTrailSaveActivity;
 
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) { 
 		super.onCreate(savedInstanceState);
 
 		//open/create the database
