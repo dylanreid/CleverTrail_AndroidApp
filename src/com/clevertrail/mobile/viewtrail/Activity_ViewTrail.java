@@ -31,7 +31,7 @@ public class Activity_ViewTrail extends TabActivity {
 		String sTrailName = "Annapurna Circuit";
 		setTitle(sTrailName);
 
-		setContentView(R.layout.main);
+		setContentView(R.layout.viewtrail);
 
 		// get the trail information from clevertrail.com
 		JSONObject json = fetchTrailJSON(sTrailName);
@@ -108,7 +108,7 @@ public class Activity_ViewTrail extends TabActivity {
 				.setContent(intent);
 		tabHost.addTab(spec);
 
-		tabHost.setCurrentTab(4);
+		tabHost.setCurrentTab(1);
 
 	}
 

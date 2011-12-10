@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">Hello, Theresa. I AM COMPUTER.</string>
-    <string name="app_name">CleverTrail For Mobile</string>
+    <string name="app_name">CleverTrail</string>
 
 </resources>
