@@ -16,11 +16,7 @@
 
         <activity
             android:label="@string/app_name"
-            android:name=".Activity_MainMenu" >            
-            <intent-filter >
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:name=".Activity_MainMenu" >
         </activity>
         <activity android:name="com.clevertrail.mobile.viewtrail.Activity_ViewTrail_Details" >
         </activity>
@@ -39,6 +35,11 @@
             android:theme="@style/CustomTheme" >
         </activity>
         <activity android:name=".Activity_ListTrails" >
+            <intent-filter >
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

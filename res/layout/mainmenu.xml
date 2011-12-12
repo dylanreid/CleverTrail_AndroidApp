@@ -21,7 +21,7 @@
                 android:src="@drawable/emptyimage" />
 
             <TextView
-                style="@style/MainMenuText"                                
+                style="@style/MainMenuText"
                 android:text="Find Trails By Map" />
         </LinearLayout>
 
