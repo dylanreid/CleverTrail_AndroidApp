@@ -28,7 +28,7 @@ public class Activity_ViewTrail extends TabActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		String sTrailName = "Annapurna Circuit";
+		String sTrailName = "Sigiriya";
 		setTitle(sTrailName);
 
 		setContentView(R.layout.viewtrail);
@@ -72,7 +72,7 @@ public class Activity_ViewTrail extends TabActivity {
 		spec = tabHost
 				.newTabSpec("stats")
 				.setIndicator("Stats",
-						res.getDrawable(R.drawable.ic_tab_artists))
+						res.getDrawable(R.drawable.viewtrail_tab_stats))
 				.setContent(intent);
 		tabHost.addTab(spec);
 
@@ -80,7 +80,7 @@ public class Activity_ViewTrail extends TabActivity {
 		intent = new Intent().setClass(this, Activity_ViewTrail_Map.class);
 		spec = tabHost
 				.newTabSpec("map")
-				.setIndicator("Map", res.getDrawable(R.drawable.ic_tab_artists))
+				.setIndicator("Map", res.getDrawable(R.drawable.viewtrail_tab_map))
 				.setContent(intent);
 		tabHost.addTab(spec);
 
@@ -88,7 +88,7 @@ public class Activity_ViewTrail extends TabActivity {
 		spec = tabHost
 				.newTabSpec("details")
 				.setIndicator("Details",
-						res.getDrawable(R.drawable.ic_tab_artists))
+						res.getDrawable(R.drawable.viewtrail_tab_details))
 				.setContent(intent);
 		tabHost.addTab(spec);
 
@@ -96,7 +96,7 @@ public class Activity_ViewTrail extends TabActivity {
 		spec = tabHost
 				.newTabSpec("photos")
 				.setIndicator("Photos",
-						res.getDrawable(R.drawable.ic_tab_artists))
+						res.getDrawable(R.drawable.viewtrail_tab_photos))
 				.setContent(intent);
 		tabHost.addTab(spec);
 
@@ -104,7 +104,7 @@ public class Activity_ViewTrail extends TabActivity {
 		spec = tabHost
 				.newTabSpec("save")
 				.setIndicator("Save",
-						res.getDrawable(R.drawable.ic_tab_artists))
+						res.getDrawable(R.drawable.viewtrail_tab_save))
 				.setContent(intent);
 		tabHost.addTab(spec);
 

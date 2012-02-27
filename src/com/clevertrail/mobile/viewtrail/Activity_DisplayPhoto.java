@@ -7,7 +7,7 @@ import android.view.Window;
 import android.widget.ImageView;
 
 import com.clevertrail.mobile.R;
-import com.clevertrail.mobile.imageutils.ImageLoader;
+import com.clevertrail.mobile.utils.ImageLoader;
 
 public class Activity_DisplayPhoto extends Activity {
 

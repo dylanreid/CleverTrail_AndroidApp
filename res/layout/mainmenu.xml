@@ -55,20 +55,6 @@
                 android:text="View Your Saved Trails" />
         </LinearLayout>
 
-        <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <ImageView
-                style="@style/MainMenuImage"
-                android:src="@drawable/emptyimage" />
-
-            <TextView
-                style="@style/MainMenuText"
-                android:text="Track Your Trail Route" />
-        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>

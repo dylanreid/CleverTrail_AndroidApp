@@ -4,6 +4,7 @@
     android:layout_height="fill_parent"
     android:gravity="center_vertical"
     android:orientation="horizontal"
+    android:background="#565656"
     android:paddingLeft="5dip" >
 
     <LinearLayout
@@ -14,9 +15,9 @@
         android:paddingRight="5dip" >
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/hikingmarker" />
+            android:layout_width="32px"
+            android:layout_height="32px"
+            android:src="@drawable/logo32" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -37,7 +38,7 @@
             android:id="@+id/icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_tab_artists_white" />
+            android:src="@drawable/viewtrail_tab_save_normal" />
     </LinearLayout>
 
 </LinearLayout>

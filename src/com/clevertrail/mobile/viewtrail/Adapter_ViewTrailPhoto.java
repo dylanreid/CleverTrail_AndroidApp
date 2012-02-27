@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.clevertrail.mobile.R;
-import com.clevertrail.mobile.imageutils.ImageLoader;
+import com.clevertrail.mobile.utils.ImageLoader;
 
 public class Adapter_ViewTrailPhoto extends BaseAdapter {
 

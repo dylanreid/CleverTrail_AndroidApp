@@ -21,8 +21,8 @@ import android.widget.TextView;
 
 import com.clevertrail.mobile.Database_SavedTrails;
 import com.clevertrail.mobile.R;
-import com.clevertrail.mobile.imageutils.FileCache;
-import com.clevertrail.mobile.imageutils.ImageLoader;
+import com.clevertrail.mobile.utils.FileCache;
+import com.clevertrail.mobile.utils.ImageLoader;
 
 public class Activity_ViewTrail_Save extends Activity {
 

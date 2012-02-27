@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.clevertrail.mobile.R;
 import com.clevertrail.mobile.R.id;
 import com.clevertrail.mobile.R.layout;
-import com.clevertrail.mobile.imageutils.ImageLoader;
+import com.clevertrail.mobile.utils.ImageLoader;
 
 public class Activity_ViewTrail_Details extends Activity {
 	
