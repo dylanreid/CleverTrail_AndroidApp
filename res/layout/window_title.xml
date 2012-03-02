@@ -38,7 +38,7 @@
             android:id="@+id/icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/viewtrail_tab_save_normal" />
+            android:src="@drawable/ic_viewtrailtab_save_unselected" />
     </LinearLayout>
 
 </LinearLayout>

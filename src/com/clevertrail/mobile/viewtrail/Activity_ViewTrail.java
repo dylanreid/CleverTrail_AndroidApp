@@ -27,11 +27,15 @@ public class Activity_ViewTrail extends TabActivity {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+        
 
 		String sTrailName = "Sigiriya";
 		setTitle(sTrailName);
 
+		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);        
 		setContentView(R.layout.viewtrail);
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.window_title);
 
 		// get the trail information from clevertrail.com
 		JSONObject json = fetchTrailJSON(sTrailName);
