@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollView01"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+
+    <TableLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:stretchColumns="0" >
+
+        <TableRow >
+
+            <TextView
+                style="@style/ViewTrailStatsText"
+                android:text="Name: "
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtStatsName"
+                style="@style/ViewTrailStatsText"
+                android:text="Unknown"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow >
+
+            <TextView
+                style="@style/ViewTrailStatsText"
+                android:text="Difficulty: " />
+
+            <TextView
+                android:id="@+id/txtDifficulty"
+                style="@style/ViewTrailStatsText"
+                android:text="Unknown" />
+        </TableRow>
+
+        <TableRow >
+
+            <TextView
+                style="@style/ViewTrailStatsText"
+                android:text="Distance: " />
+
+            <TextView
+                android:id="@+id/txtDistance"
+                style="@style/ViewTrailStatsText"
+                android:text="Unknown" />
+        </TableRow>
+
+        <TableRow >
+
+            <TextView
+                style="@style/ViewTrailStatsText"
+                android:text="Time Required: " />
+
+            <TextView
+                android:id="@+id/txtTime"
+                style="@style/ViewTrailStatsText"
+                android:text="Unknown" />
+        </TableRow>
+
+        <TableRow >
+
+            <TextView
+                style="@style/ViewTrailStatsText"
+                android:text="Trail Use: " />
+
+            <TextView
+                android:id="@+id/txtTrailUse"
+                style="@style/ViewTrailStatsText"
+                android:text="Unknown" />
+        </TableRow>
+
+        <TableRow >
+
+            <TextView
+                style="@style/ViewTrailStatsText"
+                android:text="Trail Type: " />
+
+            <TextView
+                android:id="@+id/txtTrailType"
+                style="@style/ViewTrailStatsText"
+                android:text="Unknown" />
+        </TableRow>
+
+        <TableRow >
+
+            <TextView
+                style="@style/ViewTrailStatsText"
+                android:text="Elevation Gain: " />
+
+            <TextView
+                android:id="@+id/txtElevation"
+                style="@style/ViewTrailStatsText"
+                android:text="Unknown" />
+        </TableRow>
+
+        <TableRow >
+
+            <TextView
+                style="@style/ViewTrailStatsText"
+                android:text="High Point: " />
+
+            <TextView
+                android:id="@+id/txtHighPoint"
+                style="@style/ViewTrailStatsText"
+                android:text="Unknown" />
+        </TableRow>
+
+        <TableRow >
+
+            <TextView
+                style="@style/ViewTrailStatsText"
+                android:text="Low Point: " />
+
+            <TextView
+                android:id="@+id/txtLowPoint"
+                style="@style/ViewTrailStatsText"
+                android:text="Unknown" />
+        </TableRow>
+
+        <TableRow >
+
+            <TextView
+                style="@style/ViewTrailStatsText"
+                android:text="Best Months: " />
+
+            <TextView
+                android:id="@+id/txtBestMonths"
+                style="@style/ViewTrailStatsText"
+                android:text="Unknown" />
+        </TableRow>
+
+        <TableRow >
+
+            <TextView
+                style="@style/ViewTrailStatsText"
+                android:text="Nearest City: " />
+
+            <TextView
+                android:id="@+id/txtNearestCity"
+                style="@style/ViewTrailStatsText"
+                android:text="Unknown" />
+        </TableRow>
+
+        <TableRow >
+
+            <ImageView
+                android:id="@+id/mainimage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_span="2"
+                android:src="@drawable/emptyimage" />
+        </TableRow>
+
+        <TableRow >
+
+            <TextView
+                style="@style/ViewTrailStatsText"
+                android:text="Image Credit: "
+                android:textSize="7sp" />
+
+            <TextView
+                android:id="@+id/txtImageCredit"
+                style="@style/ViewTrailStatsText"
+                android:text="None"
+                android:textSize="7sp" />
+        </TableRow>
+    </TableLayout>
+
+</ScrollView>

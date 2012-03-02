@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+
+    <ImageView
+        android:id="@+id/listtrails_imageitem"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_vertical"
+        android:scaleType="centerCrop"
+        android:src="@drawable/emptyimage" />
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/listtrails_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"            
+            android:layout_weight="1"
+            android:paddingBottom="5dp"
+            android:textColor="#000"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/listtrails_city"
+            style="@style/ListTrailsDetails"
+            android:paddingRight="3dp"
+            android:textStyle="italic"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/listtrails_details1"
+            style="@style/ListTrailsDetails"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/listtrails_details2"
+            style="@style/ListTrailsDetails"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/listtrails_trailuse"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+			android:gravity="right"
+			android:layout_marginRight="10dp"
+            android:orientation="horizontal" >
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
