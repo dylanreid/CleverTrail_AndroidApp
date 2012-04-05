@@ -14,29 +14,35 @@
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/mainmenu_findtrails_location"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
             android:orientation="horizontal" >
 
             <ImageView
                 style="@style/MainMenuImage"
-                android:src="@drawable/emptyimage" />
+                android:src="@drawable/findtrail_location" />
 
             <TextView
                 style="@style/MainMenuText"
-                android:text="Find Trails By Map" />
+                android:text="Find Trails By Location" />
         </LinearLayout>
 
         <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/mainmenu_findtrails_name"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
             android:orientation="horizontal" >
 
             <ImageView
                 style="@style/MainMenuImage"
-                android:src="@drawable/emptyimage" />
+                android:src="@drawable/findtrail_name" />
 
             <TextView
-                style="@style/MainMenuText"
+                style="@style/MainMenuText"                
                 android:text="Find Trails By Name" />
         </LinearLayout>
 
@@ -44,15 +50,36 @@
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/mainmenu_savedtrails"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
             android:orientation="horizontal" >
 
             <ImageView
                 style="@style/MainMenuImage"
-                android:src="@drawable/emptyimage" />
+                android:src="@drawable/savedtrails" />
 
             <TextView
                 style="@style/MainMenuText"
                 android:text="View Your Saved Trails" />
+        </LinearLayout>
+        
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/mainmenu_about"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:orientation="horizontal" >
+
+            <ImageView
+                style="@style/MainMenuImage"
+                android:src="@drawable/aboutclevertrail" />
+
+            <TextView
+                style="@style/MainMenuText"
+                android:text="About CleverTrail" />
         </LinearLayout>
 
     </LinearLayout>

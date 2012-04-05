@@ -77,6 +77,22 @@ public class Database_SavedTrails {
 		return result;
 	}
 	
+	//search for all saved trails
+	public String getJSONString() {
+		String[] columns = new String[] { "json" };
+		Cursor cursor = sqLiteDatabase.query(MYDATABASE_TABLE, columns, null, null, null, null, null);
+		
+		cursor.moveToFirst();
+		int index_JSON = cursor.getColumnIndex("json");
+		
+		String sReturn = "";
+		if (!cursor.isAfterLast())
+			sReturn = cursor.getString(index_JSON);
+		
+		return sReturn;
+	}
+	
+	//find a specific trail by name
 	public String getJSONString(String sName) {
 		String[] columns = new String[] { "json" };
 		String selection = "name = '" + sName + "'";

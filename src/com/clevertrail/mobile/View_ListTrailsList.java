@@ -1,15 +1,18 @@
 package com.clevertrail.mobile;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.clevertrail.mobile.viewtrail.Activity_ViewTrail;
+import com.clevertrail.mobile.viewtrail.Object_TrailArticle;
+
 public class View_ListTrailsList extends ListView {
 
-	public Activity mActivity = null;
+	public Activity_ListTrails mActivity = null;
 
 	public View_ListTrailsList(Context context) {
 		super(context);
@@ -33,16 +36,13 @@ public class View_ListTrailsList extends ListView {
 			public void onItemClick(AdapterView arg0, View arg1, int position,
 					long arg3) {
 				
-				/*ArrayList<Object_TrailPhoto> arReferencedPhotos = Object_TrailArticle.arPhotos;
-
-				if (arReferencedPhotos.size() > position && mActivity != null) {
+				if (mActivity != null) {
 					Intent i = new Intent(mActivity,
-							Activity_DisplayPhoto.class);
-					Object_TrailPhoto photo = arReferencedPhotos.get(position);
-					i.putExtra("url", photo.mURL);
-					i.putExtra("saved", Object_TrailArticle.bSaved);
+							Activity_ViewTrail.class);
+					String sName = mActivity.getTrailNameAt(position);
+					i.putExtra("name", sName);
 					mActivity.startActivity(i);
-				}*/
+				}
 			}
 		});
 	}

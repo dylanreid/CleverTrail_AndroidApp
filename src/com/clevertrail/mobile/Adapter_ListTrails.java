@@ -31,9 +31,7 @@ public class Adapter_ListTrails extends BaseAdapter {
 	}
 
 	public int getCount() {
-		//ArrayList<Object_TrailPhoto> arReferencedPhotos = Object_TrailArticle.arPhotos; 
-		//return arReferencedPhotos.size();
-		return 10;
+		return arTrails.size();
 	}
 
 	public Object getItem(int position) {

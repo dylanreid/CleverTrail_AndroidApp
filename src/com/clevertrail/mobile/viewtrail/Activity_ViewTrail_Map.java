@@ -28,7 +28,7 @@ public class Activity_ViewTrail_Map extends MapActivity {
         
         setContentView(R.layout.viewtrail_map);
         
-        mapView = (MapView) findViewById(R.id.mapview);
+       /* mapView = (MapView) findViewById(R.id.mapview);
         mapView.setBuiltInZoomControls(true);
         
         mapOverlays = mapView.getOverlays();
@@ -50,7 +50,7 @@ public class Activity_ViewTrail_Map extends MapActivity {
         
         MapController mc = mapView.getController();
         mc.setCenter(p);
-        mc.setZoom(17);
+        mc.setZoom(17);*/
     }
 	
 	@Override

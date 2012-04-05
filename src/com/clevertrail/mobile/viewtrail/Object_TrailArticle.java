@@ -106,6 +106,7 @@ public class Object_TrailArticle {
 	
 	public static boolean bSaved = false;
 	public static JSONObject jsonSaved = null;
+	public static String jsonText = "";
 	
 	public static ArrayList<Object_TrailPhoto> arPhotos;
 }

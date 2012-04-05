@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.clevertrail.mobile.Activity_ListTrails;
 import com.clevertrail.mobile.Database_SavedTrails;
 import com.clevertrail.mobile.R;
 import com.clevertrail.mobile.utils.FileCache;
@@ -30,10 +32,12 @@ public class Activity_ViewTrail_Save extends Activity {
 	private boolean mSaved = false;
 	private ExecutorService executorService;
 	private ProgressDialog mDialog;
+	private Activity_ViewTrail_Save mActivity;
 	public static Activity_ViewTrail_Save mViewTrailSaveActivity;
 
 	public void onCreate(Bundle savedInstanceState) { 
 		super.onCreate(savedInstanceState);
+		mActivity = this;
 
 		//open/create the database
 		db = new Database_SavedTrails(this);
@@ -46,7 +50,10 @@ public class Activity_ViewTrail_Save extends Activity {
 		// register events
 		Button btnSaveTrail = (Button) findViewById(R.id.btnSaveTrail);
 		btnSaveTrail.setOnClickListener(onclickSaveTrailButton);
-
+		
+		Button btnGotoSavedTrails = (Button) findViewById(R.id.btnSaveGoToSavedTrails);
+		btnGotoSavedTrails.setOnClickListener(onclickGotoSavedTrails);		
+		
 		// register an executor service
 		executorService = Executors.newFixedThreadPool(5);
 
@@ -100,7 +107,18 @@ public class Activity_ViewTrail_Save extends Activity {
 		mSaved = false;
 		updateView();
 	}
+	
+	private OnClickListener onclickGotoSavedTrails = new OnClickListener() {
+		public void onClick(View v) {
+			
+			Intent i = new Intent(mActivity,
+					Activity_ListTrails.class);
+			i.putExtra("savedtrails", true);			
+			mActivity.startActivity(i);
 
+		}
+	};
+	
 	private OnClickListener onclickSaveTrailButton = new OnClickListener() {
 		public void onClick(View v) {
 			if (Object_TrailArticle.sName != "") {
@@ -147,7 +165,7 @@ public class Activity_ViewTrail_Save extends Activity {
 				mViewTrailSaveActivity.mSaved = true;
 				db.openToWrite();
 				db.insert(Object_TrailArticle.sName,
-						Object_TrailArticle.jsonSaved.toString());
+						Object_TrailArticle.jsonText);
 				db.close();
 
 				boolean bSavePhotos = false;

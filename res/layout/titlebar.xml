@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="35dip"
+    android:background="#565656"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:background="#565656"
     android:paddingLeft="5dip" >
 
     <LinearLayout
@@ -15,16 +15,18 @@
         android:paddingRight="5dip" >
 
         <ImageView
-            android:layout_width="32px"
-            android:layout_height="32px"
-            android:src="@drawable/logo32" />
+            android:layout_width="35dip"
+            android:layout_height="35dip"
+            android:src="@drawable/logo" />
 
         <TextView
+            android:id="@+id/titlebartitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="5dip"
+            android:paddingLeft="10dip"
+            android:textColor="#ffffff"
             android:text="CleverTrail"
-            android:textSize="11dip" />
+            android:textSize="14dip" />
     </LinearLayout>
 
     <LinearLayout
@@ -35,10 +37,10 @@
         android:paddingRight="5dip" >
 
         <ImageView
-            android:id="@+id/icon"
+            android:id="@+id/titlebaricon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_viewtrailtab_save_unselected" />
+            />
     </LinearLayout>
 
 </LinearLayout>

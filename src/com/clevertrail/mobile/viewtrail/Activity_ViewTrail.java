@@ -22,23 +22,36 @@ import android.widget.TabHost;
 
 import com.clevertrail.mobile.Database_SavedTrails;
 import com.clevertrail.mobile.R;
+import com.clevertrail.mobile.utils.TitleBar;
 
 public class Activity_ViewTrail extends TabActivity {
 
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
-        
+		super.onCreate(savedInstanceState);        
 
-		String sTrailName = "Sigiriya";
+		Bundle b = getIntent().getExtras();
+        String sTrailName = "Half Dome";
+        
+        if (b != null)
+        	sTrailName = b.getString("name");
+        
 		setTitle(sTrailName);
 
-		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);        
-		setContentView(R.layout.viewtrail);
-		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.window_title);
+		String title = "CleverTrail - ";
+		title = title.concat(sTrailName);
+		TitleBar.setCustomTitleBar(this, R.layout.viewtrail, title, 0);
 
 		// get the trail information from clevertrail.com
-		JSONObject json = fetchTrailJSON(sTrailName);
+		String jsonText = fetchTrailJSONText(sTrailName);
+		JSONObject json = null;
+		try{
+			if (jsonText != "")
+				json = new JSONObject(jsonText);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		Object_TrailArticle.bSaved = false;
 
 		// if json is null, we might not have internet activity so check saved
@@ -62,6 +75,7 @@ public class Activity_ViewTrail extends TabActivity {
 		}
 
 		Object_TrailArticle.createFromJSON(sTrailName, json);
+		Object_TrailArticle.jsonText = jsonText;
 		// if creating from the web, set bSaved to false
 
 		Resources res = getResources(); // Resource object to get Drawables
@@ -112,15 +126,14 @@ public class Activity_ViewTrail extends TabActivity {
 				.setContent(intent);
 		tabHost.addTab(spec);
 
-		tabHost.setCurrentTab(1);
+		tabHost.setCurrentTab(4);
 
 	}
 
-	public JSONObject fetchTrailJSON(String sTrailName) {
-		JSONObject returnJSON = null;
-
+	public String fetchTrailJSONText(String sTrailName) {
+		
 		if (sTrailName == null || sTrailName == "")
-			return null;
+			return "";
 
 		HttpURLConnection urlConnection = null;
 		try {
@@ -137,7 +150,7 @@ public class Activity_ViewTrail extends TabActivity {
 			BufferedReader r = new BufferedReader(new InputStreamReader(in));
 			String line;
 			if ((line = r.readLine()) != null) {
-				returnJSON = new JSONObject(line);
+				return line;
 			}
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -146,15 +159,12 @@ public class Activity_ViewTrail extends TabActivity {
 			// TODO Auto-generated catch block
 			// could not connect to clevertrail.com
 			e.printStackTrace();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} finally {
 			if (urlConnection != null)
 				urlConnection.disconnect();
 		}
 
-		return returnJSON;
+		return "";
 	}
 
 }

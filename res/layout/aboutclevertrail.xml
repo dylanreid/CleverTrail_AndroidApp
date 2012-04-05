@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#E9F0EC" >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:padding="5dp" >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="10dip" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CleverTrail (http://clevertrail.com/) is a non-profit and open-source project to help hikers and outdoor enthusiasts find, add, and edit community created articles on the internet's largest trail wiki."
+            android:textColor="#000000"
+            android:textSize="18dip" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="10dip" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="If you'd like to find out more about contributing to this project, please visit http://clevertrail.com/ and click the Contribute link."
+            android:textColor="#000000"
+            android:textSize="18dip" />
+    </LinearLayout>
+
+</ScrollView>

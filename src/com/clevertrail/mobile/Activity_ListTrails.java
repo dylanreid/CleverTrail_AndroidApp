@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -16,7 +17,8 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.Window;
+
+import com.clevertrail.mobile.utils.TitleBar;
 
 public class Activity_ListTrails extends Activity {
 
@@ -27,29 +29,41 @@ public class Activity_ListTrails extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-		setContentView(R.layout.listtrails);
-		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
-				R.layout.window_title);
 
 		arTrails = new ArrayList();
 		JSONArray trailListJSON = fetchTrailListJSON();
 
-		int len = trailListJSON.length();
-		try {
-			for (int i = 0; i < len; ++i) {
-				JSONObject trail = trailListJSON.getJSONObject(i);
+		if (trailListJSON != null && trailListJSON.length() > 0) {
+			int len = trailListJSON.length();
+			try {
+				for (int i = 0; i < len; ++i) {
+					JSONObject trail = trailListJSON.getJSONObject(i);
 
-				arTrails.add(Object_TrailItem.createFromJSON(trail));
+					arTrails.add(Object_TrailItem.createFromJSON(trail));
+				}
+			} catch (JSONException e) {
 			}
-		} catch (JSONException e) {
+
+			
+			TitleBar.setCustomTitleBar(this, R.layout.listtrails, "CleverTrail", 0);
+			
+			trailList = (View_ListTrailsList) findViewById(R.id.traillist);
+			trailList.mActivity = this;
+
+			trailAdapter = new Adapter_ListTrails(this, arTrails);
+			trailList.setAdapter(trailAdapter);
+		} else {
+			// else there are no trails to display
+			TitleBar.setCustomTitleBar(this, R.layout.listtrails_notrails, "CleverTrail", 0);
 		}
+	}
 
-		trailList = (View_ListTrailsList) findViewById(R.id.traillist);
-		trailList.mActivity = this;
-
-		trailAdapter = new Adapter_ListTrails(this, arTrails);
-		trailList.setAdapter(trailAdapter);
+	public String getTrailNameAt(int pos) {
+		String sName = "";
+		if (arTrails != null && arTrails.size() > pos) {
+			return arTrails.get(pos).sName;
+		}
+		return sName;
 	}
 
 	@Override
@@ -60,10 +74,39 @@ public class Activity_ListTrails extends Activity {
 
 	public JSONArray fetchTrailListJSON() {
 		JSONArray returnJSON = null;
+		Bundle b = getIntent().getExtras();
+
+		// if the activity was launched to open the saved trails, check now
+		if (b != null && b.getBoolean("savedtrails")) {
+			Database_SavedTrails db = new Database_SavedTrails(this);
+			db.openToRead();
+			String jsonString = db.getJSONString("Half Dome");
+			
+			String line = "[";
+			line = line.concat(jsonString);
+			line = line.concat("]");
+			
+			try {
+				returnJSON = new JSONArray(line);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			db.close();
+			
+			return returnJSON;
+		}
 
 		HttpURLConnection urlConnection = null;
 		try {
 			String requestURL = "http://clevertrail.com/ajax/handleGetArticles.php";
+
+			String sName = URLEncoder.encode(b.getString("name"), "utf-8");
+
+			if (sName != "") {
+				requestURL = requestURL.concat("?name=").concat(sName);
+			}
 
 			URL url = new URL(requestURL);
 			urlConnection = (HttpURLConnection) url.openConnection();
