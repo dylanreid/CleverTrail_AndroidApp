@@ -21,6 +21,17 @@
             android:text="CleverTrail (http://clevertrail.com/) is a non-profit and open-source project to help hikers and outdoor enthusiasts find, add, and edit community created articles on the internet's largest trail wiki."
             android:textColor="#000000"
             android:textSize="18dip" />
+        
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="10dip" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CleverTrail gets bigger and better as users add hiking trails they've been on - please consider adding a trail you've been on at http://clevertrail.com and help us grow!"
+            android:textColor="#000000"
+            android:textSize="18dip" />
 
         <TextView
             android:layout_width="fill_parent"

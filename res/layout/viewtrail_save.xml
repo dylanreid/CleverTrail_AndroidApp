@@ -24,12 +24,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="#000000"
                 android:text="Current Status: " />
 
             <TextView
                 android:id="@+id/txtSaveStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="14sp"
                 android:text="Unknown"
                  />
             
@@ -46,7 +49,7 @@
             android:checked="true"
             android:text="Save trail photos (takes up more space)"
             android:textColor="#000"
-            android:textSize="8sp" />
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/btnSaveTrail"

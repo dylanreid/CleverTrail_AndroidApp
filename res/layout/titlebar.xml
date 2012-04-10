@@ -15,6 +15,7 @@
         android:paddingRight="5dip" >
 
         <ImageView
+            android:id="@+id/titlebarlogo"
             android:layout_width="35dip"
             android:layout_height="35dip"
             android:src="@drawable/logo" />

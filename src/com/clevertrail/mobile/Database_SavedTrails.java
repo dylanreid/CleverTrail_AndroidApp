@@ -85,10 +85,17 @@ public class Database_SavedTrails {
 		cursor.moveToFirst();
 		int index_JSON = cursor.getColumnIndex("json");
 		
-		String sReturn = "";
-		if (!cursor.isAfterLast())
-			sReturn = cursor.getString(index_JSON);
-		
+		String sReturn = "[";
+		while (!cursor.isAfterLast()){
+			sReturn = sReturn.concat(cursor.getString(index_JSON));
+			cursor.moveToNext();
+			if (!cursor.isAfterLast())
+				sReturn = sReturn.concat(",");
+			else
+				break;
+		}
+		sReturn = sReturn.concat("]");
+				
 		return sReturn;
 	}
 	

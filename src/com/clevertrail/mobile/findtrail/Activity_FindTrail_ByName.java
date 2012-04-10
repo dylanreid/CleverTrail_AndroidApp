@@ -1,6 +1,7 @@
 package com.clevertrail.mobile.findtrail;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.clevertrail.mobile.Activity_ListTrails;
 import com.clevertrail.mobile.R;
@@ -34,13 +36,18 @@ public class Activity_FindTrail_ByName extends Activity {
 			EditText etSearchByName = (EditText) findViewById(R.id.etSearchByName);
 			Editable edSearchText = etSearchByName.getText();
 			String sSearchText = edSearchText.toString();
-			if (sSearchText != "" && mActivity != null) {
+			if (sSearchText.compareTo("") != 0 && mActivity != null) {
 				Intent i = new Intent(mActivity, Activity_ListTrails.class);
 				i.putExtra("name", sSearchText);
 				mActivity.startActivity(i);
 			} else {
 				//display message about empty string
-				
+				Context context = getApplicationContext();
+				CharSequence text = "Please Enter A Trail Name";
+				int duration = Toast.LENGTH_LONG;
+
+				Toast toast = Toast.makeText(context, text, duration);
+				toast.show();
 			}
 		}
 	};

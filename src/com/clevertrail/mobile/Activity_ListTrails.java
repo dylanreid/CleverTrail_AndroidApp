@@ -25,14 +25,30 @@ public class Activity_ListTrails extends Activity {
 	View_ListTrailsList trailList;
 	Adapter_ListTrails trailAdapter;
 	ArrayList<Object_TrailItem> arTrails;
+	
+	private boolean bSavedTrails = false;
+	private boolean bFindTrails = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Bundle b = getIntent().getExtras();
+		int icon = R.drawable.ic_viewtrailtab_save_unselected;
+		String title;
+		
+		if (b != null && b.getBoolean("savedtrails")){
+			bSavedTrails = true;
+			icon = R.drawable.ic_viewtrailtab_save_unselected;
+			title = "CleverTrail - Saved Trails";
+		} else {
+			bFindTrails = true;
+			icon = R.drawable.ic_viewtrailtab_details_unselected;
+			title = "CleverTrail - Found Trails";
+		}
 
 		arTrails = new ArrayList();
 		JSONArray trailListJSON = fetchTrailListJSON();
-
+		
 		if (trailListJSON != null && trailListJSON.length() > 0) {
 			int len = trailListJSON.length();
 			try {
@@ -44,17 +60,17 @@ public class Activity_ListTrails extends Activity {
 			} catch (JSONException e) {
 			}
 
-			
-			TitleBar.setCustomTitleBar(this, R.layout.listtrails, "CleverTrail", 0);
+			TitleBar.setCustomTitleBar(this, R.layout.listtrails, title, icon);
 			
 			trailList = (View_ListTrailsList) findViewById(R.id.traillist);
-			trailList.mActivity = this;
-
-			trailAdapter = new Adapter_ListTrails(this, arTrails);
-			trailList.setAdapter(trailAdapter);
+			if (trailList != null) {
+				trailList.mActivity = this;
+				trailAdapter = new Adapter_ListTrails(this, arTrails);
+				trailList.setAdapter(trailAdapter);
+			}
 		} else {
 			// else there are no trails to display
-			TitleBar.setCustomTitleBar(this, R.layout.listtrails_notrails, "CleverTrail", 0);
+			TitleBar.setCustomTitleBar(this, R.layout.listtrails_notrails, title, icon);
 		}
 	}
 
@@ -68,26 +84,24 @@ public class Activity_ListTrails extends Activity {
 
 	@Override
 	public void onDestroy() {
-		trailList.setAdapter(null);
+		if (trailList != null)
+			trailList.setAdapter(null);
+		
 		super.onDestroy();
 	}
 
 	public JSONArray fetchTrailListJSON() {
 		JSONArray returnJSON = null;
 		Bundle b = getIntent().getExtras();
-
+		
 		// if the activity was launched to open the saved trails, check now
-		if (b != null && b.getBoolean("savedtrails")) {
+		if (bSavedTrails) {
 			Database_SavedTrails db = new Database_SavedTrails(this);
 			db.openToRead();
-			String jsonString = db.getJSONString("Half Dome");
-			
-			String line = "[";
-			line = line.concat(jsonString);
-			line = line.concat("]");
+			String jsonString = db.getJSONString();						
 			
 			try {
-				returnJSON = new JSONArray(line);
+				returnJSON = new JSONArray(jsonString);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

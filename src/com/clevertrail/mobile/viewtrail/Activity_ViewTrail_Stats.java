@@ -42,7 +42,8 @@ public class Activity_ViewTrail_Stats extends Activity {
 		
 		ImageLoader imageLoader = new ImageLoader(getApplicationContext());
 		ImageView image = (ImageView) findViewById(R.id.mainimage);
-		imageLoader.DisplayImage(Object_TrailArticle.mImage.mURL, image);
+		if (Object_TrailArticle.mImage != null)
+			imageLoader.DisplayImage(Object_TrailArticle.mImage.mURL, image);
 		
 		TextView tvImageCredit = (TextView) findViewById(R.id.txtImageCredit);
 		tvImageCredit.setText(Object_TrailArticle.sImageCredit);
