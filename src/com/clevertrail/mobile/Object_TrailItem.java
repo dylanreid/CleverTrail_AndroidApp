@@ -17,7 +17,7 @@ public class Object_TrailItem {
 			trail.sName = json.getString("name");
 			trail.sDifficulty = json.getString("difficulty");
 			trail.sDistance = json.getString("distance");
-			trail.sNearestCity = "A CITY";
+			trail.sNearestCity = json.getString("nearestcity");
 			trail.sThumbnail = json.getString("image");
 			trail.sTimeRequired = json.getString("time");
 			trail.sTrailType = json.getString("trailtype");

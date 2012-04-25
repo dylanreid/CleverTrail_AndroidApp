@@ -126,7 +126,7 @@ public class Activity_ViewTrail extends TabActivity {
 				.setContent(intent);
 		tabHost.addTab(spec);
 
-		tabHost.setCurrentTab(4);
+		tabHost.setCurrentTab(0);
 
 	}
 

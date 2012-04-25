@@ -3,6 +3,10 @@ package com.clevertrail.mobile.findtrail;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,9 +25,16 @@ public class Activity_FindTrail_ByLocation extends Activity {
 	private Spinner m_cbFindTrailByLocationProximity;
 	public Activity mActivity = null;
 	private ArrayAdapter<CharSequence> m_adapterForSpinner;
+	
+	private LocationManager locationManager;
+	private Location currentLocation = null;	
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		// Register the listener with the Location Manager to receive location updates
+		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 
 		TitleBar.setCustomTitleBar(this, R.layout.findtrail_bylocation,
 				"CleverTrail", R.drawable.ic_viewtrailtab_map_unselected);
@@ -41,6 +52,20 @@ public class Activity_FindTrail_ByLocation extends Activity {
 		Button btnSearch = (Button) findViewById(R.id.btnSearchByLocation);
 		btnSearch.setOnClickListener(onclickSearch);
 	}
+	
+	// Define a listener that responds to location updates
+	LocationListener locationListener = new LocationListener() {
+	    public void onLocationChanged(Location location) {
+	      // Called when a new location is found by the network location provider.
+	      currentLocation = location;
+	    }
+
+	    public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+	    public void onProviderEnabled(String provider) {}
+
+	    public void onProviderDisabled(String provider) {}
+	  };
 
 	private void createComboBox() {
 		m_cbFindTrailByLocationProximity = (Spinner) findViewById(R.id.cbFindTrailByLocationProximity);
@@ -64,9 +89,19 @@ public class Activity_FindTrail_ByLocation extends Activity {
 			RadioButton rbProximity = (RadioButton) findViewById(R.id.rbFindTrailByLocationProximity);
 			if (rbProximity != null && rbProximity.isChecked()){
 				//search by proximity
-				Intent i = new Intent(mActivity, 
-						Activity_FindTrail_DisplayMap.class);
-				mActivity.startActivity(i);
+				
+				//do we have a location?
+				if (currentLocation != null){
+					double lat = currentLocation.getLatitude();
+					double lng = currentLocation.getLongitude();
+					
+					Intent i = new Intent(mActivity, 
+							Activity_FindTrail_DisplayMap.class);
+					mActivity.startActivity(i);
+				} else {
+					showToastMessage("Your Current Location Cannot Be Found");
+				}
+				
 			} else {
 				EditText etCity = (EditText) findViewById(R.id.txtFindTrailByLocationCity);
 				if (etCity != null){
@@ -78,17 +113,20 @@ public class Activity_FindTrail_ByLocation extends Activity {
 						mActivity.startActivity(i);
 					} else {
 						//display error message if the city name is blank
-						Context context = getApplicationContext();
-						CharSequence text = "Please Enter A City Name";
-						int duration = Toast.LENGTH_LONG;
-
-						Toast toast = Toast.makeText(context, text, duration);
-						toast.show();
+						showToastMessage("Please Enter A City Name");
 					}
 				}				
 			}
 		}
 	};
+	
+	private void showToastMessage(CharSequence sMessage){
+		Context context = getApplicationContext();
+		int duration = Toast.LENGTH_LONG;
+
+		Toast toast = Toast.makeText(context, sMessage, duration);
+		toast.show();
+	}
 
 	private OnClickListener onclickRBCity = new OnClickListener() {
 		public void onClick(View v) {

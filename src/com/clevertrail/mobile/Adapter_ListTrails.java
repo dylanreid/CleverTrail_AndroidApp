@@ -61,10 +61,18 @@ public class Adapter_ListTrails extends BaseAdapter {
 			textName.setText(trail.sName); 
 			imageLoader.DisplayImage(trail.sThumbnail, image); 
 			textCity.setText(trail.sNearestCity + " ");
-			textDetails1.setText(trail.sDifficulty);
+			
+			String sDetails1 = trail.sDifficulty;			
+			if (trail.sDifficulty.compareTo("") != 0 && trail.sDistance.compareTo("") != 0) {
+				sDetails1 = sDetails1.concat(" - ").concat(trail.sDistance);
+			} else {
+				sDetails1 = sDetails1.concat(trail.sDistance);
+			}
+			textDetails1.setText(sDetails1);
 			textDetails2.setText(trail.sTrailType);
 			
 			LinearLayout llTrailUse = (LinearLayout) vi.findViewById(R.id.listtrails_trailuse);
+			llTrailUse.removeAllViews();
 			
 			for (int i=0; i<trail.mTrailUse.length; i++){
 				if (trail.mTrailUse[i]) {

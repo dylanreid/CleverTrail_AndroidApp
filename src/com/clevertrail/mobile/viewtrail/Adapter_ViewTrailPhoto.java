@@ -53,8 +53,9 @@ public class Adapter_ViewTrailPhoto extends BaseAdapter {
 		if (arReferencedPhotos.size() >= position) {
 			Object_TrailPhoto photo = arReferencedPhotos.get(position);
 			imageLoader.DisplayImage(photo.mURL120px, image);
-			if (photo.mCaption != null && photo.mCaption.compareTo("") != 0) {
-				text.setText(photo.mCaption);
+			String sCaption = photo.getCaption();
+			if (sCaption != null && sCaption.compareTo("") != 0) {
+				text.setText(sCaption);
 			} else {
 				text.setText("[Click for larger image]");
 			}

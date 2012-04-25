@@ -5,6 +5,7 @@ import com.clevertrail.mobile.utils.ImageLoader;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -47,5 +48,56 @@ public class Activity_ViewTrail_Stats extends Activity {
 		
 		TextView tvImageCredit = (TextView) findViewById(R.id.txtImageCredit);
 		tvImageCredit.setText(Object_TrailArticle.sImageCredit);
+		
+		if (Object_TrailArticle.mTrailUse[0]){
+			ImageView ivHike = (ImageView) findViewById(R.id.ivTrailUseHike);
+			ivHike.setVisibility(View.VISIBLE);			
+		}
+		
+		if (Object_TrailArticle.mTrailUse[1]){
+			ImageView ivBicycle = (ImageView) findViewById(R.id.ivTrailUseBicycle);
+			ivBicycle.setVisibility(View.VISIBLE);			
+		}
+		
+		if (Object_TrailArticle.mTrailUse[2]){
+			ImageView ivHandicap = (ImageView) findViewById(R.id.ivTrailUseHandicap);
+			ivHandicap.setVisibility(View.VISIBLE);			
+		}
+		
+		if (Object_TrailArticle.mTrailUse[3]){
+			ImageView ivSwim = (ImageView) findViewById(R.id.ivTrailUseSwim);
+			ivSwim.setVisibility(View.VISIBLE);			
+		}
+		
+		if (Object_TrailArticle.mTrailUse[4]){
+			ImageView ivClimb = (ImageView) findViewById(R.id.ivTrailUseClimb);
+			ivClimb.setVisibility(View.VISIBLE);			
+		}
+		
+		if (Object_TrailArticle.mTrailUse[5]){
+			ImageView ivHorse = (ImageView) findViewById(R.id.ivTrailUseHorse);
+			ivHorse.setVisibility(View.VISIBLE);			
+		}
+		
+		if (Object_TrailArticle.mTrailUse[6]){
+			ImageView ivCamp = (ImageView) findViewById(R.id.ivTrailUseCamp);
+			ivCamp.setVisibility(View.VISIBLE);			
+		}
+		
+		if (Object_TrailArticle.mTrailUse[7]){
+			ImageView ivDog = (ImageView) findViewById(R.id.ivTrailUseDog);
+			ivDog.setVisibility(View.VISIBLE);			
+		}
+		
+		if (Object_TrailArticle.mTrailUse[8]){
+			ImageView ivFish = (ImageView) findViewById(R.id.ivTrailUseFish);
+			ivFish.setVisibility(View.VISIBLE);			
+		}
+		
+		if (Object_TrailArticle.mTrailUse[9]){
+			ImageView ivFamily = (ImageView) findViewById(R.id.ivTrailUseFamily);
+			ivFamily.setVisibility(View.VISIBLE);			
+		}
+			
     }
 }

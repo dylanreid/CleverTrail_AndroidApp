@@ -13,11 +13,11 @@
         <item name="android:textSize">10sp</item>
         <item name="android:textStyle">bold</item>
     </style>
-    
+
     <style name="ViewTrailStatsText">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:textSize">10sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:textColor">#000</item>
     </style>
 
@@ -41,8 +41,16 @@
         <item name="android:layout_height">fill_parent</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_span">2</item>
-        <item name="android:textSize">10sp</item>
+        <item name="android:textSize">13sp</item>
         <item name="android:textColor">#000</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="ViewTrailStatsTrailUseImage">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingLeft">1dip</item>
+        <item name="android:layout_gravity">left</item>
         <item name="android:visibility">gone</item>
     </style>
 
@@ -68,8 +76,8 @@
         <item name="android:gravity">left</item>
         <item name="android:paddingBottom">2dp</item>
         <item name="android:layout_gravity">left</item>
-        <item name="android:textSize">8sp</item>
-        <item name="android:textColor">#666</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">#000</item>
     </style>
 
 </resources>

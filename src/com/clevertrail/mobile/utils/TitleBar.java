@@ -32,7 +32,6 @@ public class TitleBar {
         if (title != ""){
         	TextView tvTitle = (TextView) activity.findViewById(R.id.titlebartitle);
         	tvTitle.setText(title);
-        	tvTitle.setOnClickListener(onclickMainMenu);
         }
         
         ImageView ivLogo = (ImageView) activity.findViewById(R.id.titlebarlogo);

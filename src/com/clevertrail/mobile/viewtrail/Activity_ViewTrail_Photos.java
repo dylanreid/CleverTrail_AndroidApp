@@ -16,20 +16,29 @@ public class Activity_ViewTrail_Photos extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.viewtrail_photos);
         
-        photoList = (View_ViewTrailPhotoList)findViewById(R.id.photolist);
-        photoList.mActivity = this;
-        
-        photoAdapter = new Adapter_ViewTrailPhoto(this);
-        photoList.setAdapter(photoAdapter);        
+        //are there photos to display?
+        if (Object_TrailArticle.arPhotos != null && Object_TrailArticle.arPhotos.size() > 0)
+        {
+	        setContentView(R.layout.viewtrail_photos);
+	        
+	        photoList = (View_ViewTrailPhotoList)findViewById(R.id.photolist);
+	        photoList.mActivity = this;
+	        
+	        photoAdapter = new Adapter_ViewTrailPhoto(this);
+	        photoList.setAdapter(photoAdapter);        
+        } else {
+        	setContentView(R.layout.viewtrail_nophotos);
+        }
     }
     
     @Override
     public void onDestroy()
     {
-    	photoList.setAdapter(null);
-        super.onDestroy();
+    	if (photoList != null)
+    		photoList.setAdapter(null);
+
+    	super.onDestroy();
     }
 
 }

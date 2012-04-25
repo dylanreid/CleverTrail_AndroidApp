@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="fill_parent"
-  android:layout_height="wrap_content">
-  <ImageView
-  	  android:id="@+id/imageitem"
-	  android:layout_width="60dp" 
-	  android:layout_height="60dp"
-	  android:src="@drawable/emptyimage"
-	  android:layout_gravity="center_vertical"  
-	  android:scaleType="centerCrop"/>
-  <TextView
-  	  android:id="@+id/textitem"
-  	  android:layout_width="fill_parent"
-	  android:layout_height="wrap_content"
-	  android:layout_weight="1" 
-	  android:textSize="10sp" 
-	  android:textColor="#000"
-	  android:layout_gravity="left|center_vertical"
-	  android:layout_marginLeft="10dp"/>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+
+    <ImageView
+        android:id="@+id/imageitem"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_vertical"
+        android:scaleType="centerCrop"
+        android:src="@drawable/emptyimage" />
+
+    <TextView
+        android:id="@+id/textitem"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|center_vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_weight="1"
+        android:textColor="#000"
+        android:textSize="10sp" />
+
 </LinearLayout>

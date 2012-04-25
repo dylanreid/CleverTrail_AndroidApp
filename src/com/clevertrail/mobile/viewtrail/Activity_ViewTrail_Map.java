@@ -28,9 +28,9 @@ public class Activity_ViewTrail_Map extends MapActivity {
         
         setContentView(R.layout.viewtrail_map);
         
-       /* mapView = (MapView) findViewById(R.id.mapview);
+        mapView = (MapView) findViewById(R.id.mapview);
         mapView.setBuiltInZoomControls(true);
-        
+     /*   
         mapOverlays = mapView.getOverlays();
         drawable = this.getResources().getDrawable(R.drawable.hikingmarker);
         itemizedOverlay = new HelloItemizedOverlay(drawable);
