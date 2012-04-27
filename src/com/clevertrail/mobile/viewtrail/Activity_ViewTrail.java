@@ -30,7 +30,8 @@ public class Activity_ViewTrail extends TabActivity {
 		super.onCreate(savedInstanceState);        
 
 		Bundle b = getIntent().getExtras();
-        String sTrailName = "Half Dome";
+        String sTrailName = "Forte Defensor Perpetuo";
+		//String sTrailName = "Half Dome";
         
         if (b != null)
         	sTrailName = b.getString("name");

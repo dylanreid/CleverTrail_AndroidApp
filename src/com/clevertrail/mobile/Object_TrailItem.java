@@ -33,6 +33,10 @@ public class Object_TrailItem {
 			trail.mTrailUse[7] = (json.getString("dog").compareTo("1") == 0);
 			trail.mTrailUse[8] = (json.getString("fish").compareTo("1") == 0);
 			trail.mTrailUse[9] = (json.getString("family").compareTo("1") == 0);
+			
+			//map data
+			trail.mTrailheadLat = json.getDouble("lat");
+			trail.mTrailheadLng = json.getDouble("lng");			
 		} catch (JSONException e) {
 			
 		}		
@@ -68,6 +72,9 @@ public class Object_TrailItem {
 	public String sNearestCity;
 	public String sTrailType;
 	public String sThumbnail;
+	
+	public double mTrailheadLat;
+	public double mTrailheadLng;
 	
 	//in this order: hike, bicycle, handicap, swim, climb, horse, camp, dog, fish, family
 	public boolean mTrailUse[] = new boolean[10];

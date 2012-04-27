@@ -23,38 +23,43 @@
             android:textColor="#000000"
             android:textSize="18dip" />
 
+        <RadioButton
+            android:id="@+id/rbFindTrailByLocationProximity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="By Your Current Location"
+            android:textColor="#000000" />
 
-            <RadioButton
-                android:id="@+id/rbFindTrailByLocationProximity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#000000"
-                android:checked="true"
-                android:text="Search By Your Current Location" />
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal"
+             >
 
-
-            <Spinner
-                android:id="@+id/cbFindTrailByLocationProximity"
-                android:layout_gravity="right"
-                android:layout_width="200dp"           
-                android:layout_height="wrap_content" />
-  
             <RadioButton
                 android:id="@+id/rbFindTrailByLocationCity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#000000"
                 android:checked="false"
-                android:text="Search By City" />
+                android:text="By City "
+                android:textColor="#000000" />
 
             <EditText
                 android:id="@+id/txtFindTrailByLocationCity"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:layout_width="200dp"
-                android:enabled="false"
-                android:layout_height="wrap_content" >
+                android:enabled="false" >
             </EditText>
-  
+        </LinearLayout>
+
+        <Spinner
+            android:id="@+id/cbFindTrailProximity"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content" />
+
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="10dip" />

@@ -108,6 +108,40 @@ public class Object_TrailArticle {
 						.compareTo("1") == 0);
 				Object_TrailArticle.mTrailUse[9] = (json.getString("family")
 						.compareTo("1") == 0);
+				
+				String jsonMapString = json.getString("jsonMapdata");
+				if (jsonMapString.compareTo("") != 0){
+					JSONObject jsonMapData = new JSONObject(jsonMapString);
+					
+					if (jsonMapData != null) {
+						Object_TrailArticle.dCenterLat = jsonMapData.getDouble("centerLat");
+						Object_TrailArticle.dCenterLng = jsonMapData.getDouble("centerLong");
+						Object_TrailArticle.nCenterZoom = jsonMapData.getInt("zoom");
+						Object_TrailArticle.sMapType = jsonMapData.getString("mapType");
+						
+						Object_TrailArticle.mMarkerLats = new double[50];
+						Object_TrailArticle.mMarkerLngs = new double[50];
+						Object_TrailArticle.mMarkerDescs = new String[50];
+						Object_TrailArticle.mMarkerTypes = new String[50];
+						
+						JSONArray arMarkers = jsonMapData.getJSONArray("markerLats");
+						for (int i = 0; i < arMarkers.length(); i++) {
+							Object_TrailArticle.mMarkerLats[i] = arMarkers.getDouble(i);
+						}
+						arMarkers = jsonMapData.getJSONArray("markerLongs");
+						for (int i = 0; i < arMarkers.length(); i++) {
+							Object_TrailArticle.mMarkerLngs[i] = arMarkers.getDouble(i);
+						}
+						arMarkers = jsonMapData.getJSONArray("markerDescs");
+						for (int i = 0; i < arMarkers.length(); i++) {
+							Object_TrailArticle.mMarkerDescs[i] = arMarkers.getString(i);
+						}
+						arMarkers = jsonMapData.getJSONArray("markerTypes");
+						for (int i = 0; i < arMarkers.length(); i++) {
+							Object_TrailArticle.mMarkerTypes[i] = arMarkers.getString(i);
+						}
+					}
+				}
 
 			}
 		} catch (JSONException e) {
@@ -150,6 +184,16 @@ public class Object_TrailArticle {
 	public static boolean bSaved = false;
 	public static JSONObject jsonSaved = null;
 	public static String jsonText = "";
+	
+	//map data
+	public static double dCenterLat;
+	public static double dCenterLng;
+	public static int nCenterZoom;
+	public static String sMapType;
+	public static double mMarkerLats[] = new double[50];
+	public static double mMarkerLngs[] = new double[50];
+	public static String mMarkerDescs[] = new String[50];
+	public static String mMarkerTypes[] = new String[50];
 
 	public static ArrayList<Object_TrailPhoto> arPhotos;
 }

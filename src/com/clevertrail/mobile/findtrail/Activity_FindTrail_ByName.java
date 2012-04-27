@@ -36,6 +36,7 @@ public class Activity_FindTrail_ByName extends Activity {
 			EditText etSearchByName = (EditText) findViewById(R.id.etSearchByName);
 			Editable edSearchText = etSearchByName.getText();
 			String sSearchText = edSearchText.toString();
+			sSearchText = sSearchText.trim();
 			if (sSearchText.compareTo("") != 0 && mActivity != null) {
 				Intent i = new Intent(mActivity, Activity_ListTrails.class);
 				i.putExtra("name", sSearchText);
