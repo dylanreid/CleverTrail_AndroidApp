@@ -46,14 +46,6 @@
         <item name="android:visibility">gone</item>
     </style>
 
-    <style name="ViewTrailStatsTrailUseImage">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:paddingLeft">1dip</item>
-        <item name="android:layout_gravity">left</item>
-        <item name="android:visibility">gone</item>
-    </style>
-
     <style name="MainMenuImage">
         <item name="android:layout_height">48dp</item>
         <item name="android:layout_width">48dp</item>

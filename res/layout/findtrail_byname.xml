@@ -19,7 +19,7 @@
             android:id="@+id/tvEnterNameOrCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Search For Trail Name"
+            android:text="Search For Trails By Name"
             android:textColor="#000000"
             android:textSize="18dip" />
 

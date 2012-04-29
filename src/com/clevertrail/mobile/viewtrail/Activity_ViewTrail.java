@@ -12,47 +12,56 @@ import java.net.URL;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.ProgressDialog;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Window;
 import android.widget.TabHost;
 
 import com.clevertrail.mobile.Database_SavedTrails;
 import com.clevertrail.mobile.R;
 import com.clevertrail.mobile.utils.TitleBar;
+import com.clevertrail.mobile.utils.Utils;
 
 public class Activity_ViewTrail extends TabActivity {
 
+	ProgressDialog mPD = null;
+
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);        
+		super.onCreate(savedInstanceState);
 
+		mPD = ProgressDialog.show(this, "",
+				"Contacting http://clevertrail.com ...", true);
+		new Thread(new Runnable() {
+			public void run() {
+				generateTrail();
+				mPD.dismiss();
+				return;
+			}
+		}).start();
+	}
+
+	private void generateTrail() {
 		Bundle b = getIntent().getExtras();
-        String sTrailName = "Forte Defensor Perpetuo";
-		//String sTrailName = "Half Dome";
-        
-        if (b != null)
-        	sTrailName = b.getString("name");
-        
-		setTitle(sTrailName);
+		String sTrailName = "Forte Defensor Perpetuo";
+		// String sTrailName = "Half Dome";
 
-		String title = "CleverTrail - ";
-		title = title.concat(sTrailName);
-		TitleBar.setCustomTitleBar(this, R.layout.viewtrail, title, 0);
+		if (b != null)
+			sTrailName = b.getString("name");
 
 		// get the trail information from clevertrail.com
 		String jsonText = fetchTrailJSONText(sTrailName);
 		JSONObject json = null;
-		try{
+		try {
 			if (jsonText != "")
 				json = new JSONObject(jsonText);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		Object_TrailArticle.bSaved = false;
 
 		// if json is null, we might not have internet activity so check saved
@@ -63,7 +72,7 @@ public class Activity_ViewTrail extends TabActivity {
 			String jsonString = db.getJSONString(sTrailName);
 			try {
 				json = new JSONObject(jsonString);
-				
+
 				// if we found the json object in the db, mark it as saved
 				if (json != null) {
 					Object_TrailArticle.bSaved = true;
@@ -75,9 +84,19 @@ public class Activity_ViewTrail extends TabActivity {
 			db.close();
 		}
 
-		Object_TrailArticle.createFromJSON(sTrailName, json);
-		Object_TrailArticle.jsonText = jsonText;
-		// if creating from the web, set bSaved to false
+		String title = "CleverTrail - ";
+		title = title.concat(sTrailName);
+		int layoutID = R.layout.viewtrail;
+
+		if (json != null) {
+			Object_TrailArticle.createFromJSON(sTrailName, json);
+			Object_TrailArticle.jsonText = jsonText;
+		} else {
+			Object_TrailArticle.clearData();
+			layoutID = R.layout.viewtrail_nodata;
+		}
+
+		TitleBar.setCustomTitleBar(this, layoutID, title, 0);
 
 		Resources res = getResources(); // Resource object to get Drawables
 		TabHost tabHost = getTabHost(); // The activity TabHost
@@ -99,7 +118,8 @@ public class Activity_ViewTrail extends TabActivity {
 		intent = new Intent().setClass(this, Activity_ViewTrail_Map.class);
 		spec = tabHost
 				.newTabSpec("map")
-				.setIndicator("Map", res.getDrawable(R.drawable.viewtrail_tab_map))
+				.setIndicator("Map",
+						res.getDrawable(R.drawable.viewtrail_tab_map))
 				.setContent(intent);
 		tabHost.addTab(spec);
 
@@ -128,12 +148,12 @@ public class Activity_ViewTrail extends TabActivity {
 		tabHost.addTab(spec);
 
 		tabHost.setCurrentTab(0);
-
 	}
 
 	public String fetchTrailJSONText(String sTrailName) {
-		
-		if (sTrailName == null || sTrailName == "")
+
+		if (sTrailName == null || sTrailName == ""
+				|| !Utils.isNetworkAvailable(this))
 			return "";
 
 		HttpURLConnection urlConnection = null;

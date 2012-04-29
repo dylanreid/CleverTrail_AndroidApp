@@ -22,7 +22,7 @@
             android:id="@+id/textView1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="No Trails Were Found"
+            android:text="Could not load trail data (do you have connectivity?)"
             android:textColor="#000"
             android:textSize="20sp"
             android:gravity="center"

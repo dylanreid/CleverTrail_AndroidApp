@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -78,8 +80,10 @@ public class Adapter_ListTrails extends BaseAdapter {
 				if (trail.mTrailUse[i]) {
 					ImageView imageTrailUse = new ImageView(mActivity);			
 					imageTrailUse.setImageResource(TrailUseUtils.getTrailUseResource(i));
-					LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(20, 20);
-					lp.setMargins(5, 0, 0, 0);
+					LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+							LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+					lp.setMargins(2, 0, 0, 0);
+					lp.gravity = Gravity.RIGHT;					
 					imageTrailUse.setLayoutParams(lp);
 					llTrailUse.addView(imageTrailUse);	
 				}

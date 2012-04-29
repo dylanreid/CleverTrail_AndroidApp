@@ -15,14 +15,10 @@ import com.readystatesoftware.mapviewballoons.BalloonItemizedOverlay;
 public class MapTrailOverlay extends BalloonItemizedOverlay<OverlayItem> {
 
 	private ArrayList<OverlayItem> m_overlays = new ArrayList<OverlayItem>();
-	private Context c;
-	private String mTrailName;
 	private Activity mActivity;
 	
-	public MapTrailOverlay(Drawable defaultMarker, MapView mapView, Activity activity, String sTrailName) {
+	public MapTrailOverlay(Drawable defaultMarker, MapView mapView, Activity activity) {
 		super(boundCenter(defaultMarker), mapView);
-		c = mapView.getContext();
-		mTrailName = sTrailName;
 		mActivity = activity;
 	}
 
@@ -43,10 +39,10 @@ public class MapTrailOverlay extends BalloonItemizedOverlay<OverlayItem> {
 
 	@Override
 	protected boolean onBalloonTap(int index, OverlayItem item) {
-		if (mTrailName.compareTo("") != 0 && mActivity != null) {
+		if (mActivity != null) {
 			Intent i = new Intent(mActivity,
 					Activity_ViewTrail.class);
-			i.putExtra("name", mTrailName);
+			i.putExtra("name", item.getTitle());
 			mActivity.startActivity(i);
 		}
 		return true;

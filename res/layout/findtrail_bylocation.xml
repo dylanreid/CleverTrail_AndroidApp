@@ -7,7 +7,7 @@
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="5dp" >
 
@@ -19,7 +19,7 @@
             android:id="@+id/tvEnterNameOrCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Search For Trail By Location"
+            android:text="Search For Trails By Location"
             android:textColor="#000000"
             android:textSize="18dip" />
 

@@ -77,20 +77,29 @@ public class Activity_FindTrail_DisplayMap extends MapActivity {
 
 			String sDescription = "";
 			if (trail.sDifficulty.compareTo("") != 0){
-				sDescription = sDescription.concat("Difficulty: " + trail.sDifficulty + "\n");
+				sDescription = sDescription.concat("Difficulty: " + trail.sDifficulty);
 			}
 			if (trail.sDistance.compareTo("") != 0){
-				sDescription = sDescription.concat("Distance: " + trail.sDistance + "\n");
+				if (sDescription.compareTo("") != 0)
+					sDescription = sDescription.concat("\n");
+				sDescription = sDescription.concat("Distance: " + trail.sDistance);
+			}
+			if (trail.sTimeRequired.compareTo("") != 0){
+				if (sDescription.compareTo("") != 0)
+					sDescription = sDescription.concat("\n");
+				sDescription = sDescription.concat("Time Required: " + trail.sTimeRequired);
 			}
 			if (trail.sTrailType.compareTo("") != 0){
-				sDescription = sDescription.concat("Trail Type: " + trail.sTrailType + "\n");
+				if (sDescription.compareTo("") != 0)
+					sDescription = sDescription.concat("\n");
+				sDescription = sDescription.concat("Trail Type: " + trail.sTrailType);
 			}
 
 			OverlayItem overlayItem = new OverlayItem(point, trail.sName,
 					sDescription);
 
 			if (overlayTrailhead == null)
-				overlayTrailhead = new MapTrailOverlay(drawTrailhead, mapView, this, trail.sName);
+				overlayTrailhead = new MapTrailOverlay(drawTrailhead, mapView, this);
 
 			// add the overlay
 			overlayTrailhead.addOverlay(overlayItem);
@@ -104,12 +113,13 @@ public class Activity_FindTrail_DisplayMap extends MapActivity {
 		if (nMaxLat != nMinLat) {			
 			mc.zoomToSpan(Math.abs(nMaxLat - nMinLat),
 					Math.abs(nMaxLng - nMinLng));
-			mc.animateTo(new GeoPoint((nMaxLat + nMinLat) / 2,
-					(nMaxLng + nMinLng) / 2));
 		} else {
 			mc.setZoom(10);
 		}
+		mc.animateTo(new GeoPoint((nMaxLat + nMinLat) / 2,
+				(nMaxLng + nMinLng) / 2));
 	}
+
 	
 	@Override
 	protected boolean isRouteDisplayed() {

@@ -12,6 +12,8 @@ public class Object_TrailArticle {
 
 		try {
 			if (json != null) {
+				Object_TrailArticle.clearData();
+				
 				jsonSaved = json;
 				sName = name;
 
@@ -117,12 +119,7 @@ public class Object_TrailArticle {
 						Object_TrailArticle.dCenterLat = jsonMapData.getDouble("centerLat");
 						Object_TrailArticle.dCenterLng = jsonMapData.getDouble("centerLong");
 						Object_TrailArticle.nCenterZoom = jsonMapData.getInt("zoom");
-						Object_TrailArticle.sMapType = jsonMapData.getString("mapType");
-						
-						Object_TrailArticle.mMarkerLats = new double[50];
-						Object_TrailArticle.mMarkerLngs = new double[50];
-						Object_TrailArticle.mMarkerDescs = new String[50];
-						Object_TrailArticle.mMarkerTypes = new String[50];
+						Object_TrailArticle.sMapType = jsonMapData.getString("mapType");												
 						
 						JSONArray arMarkers = jsonMapData.getJSONArray("markerLats");
 						for (int i = 0; i < arMarkers.length(); i++) {
@@ -154,6 +151,48 @@ public class Object_TrailArticle {
 		sText = sText.replace("&quot;", "\"");
 		sText = sText.replace("&amp;", "&");
 		return sText;
+	}
+	
+	public static void clearData(){
+		Object_TrailArticle.sName = "";
+
+		Object_TrailArticle.sOverview = "";
+		Object_TrailArticle.sDirections = "";
+		Object_TrailArticle.sDescription = "";
+		Object_TrailArticle.sConditions = "";
+		Object_TrailArticle.sFees = "";
+		Object_TrailArticle.sAmenities = "";
+		Object_TrailArticle.sMisc = "";
+
+		Object_TrailArticle.mImage = null;
+		Object_TrailArticle.sImageCredit = "";
+		Object_TrailArticle.sDifficulty = "";
+		Object_TrailArticle.sDistance = "";
+		Object_TrailArticle.sTime = "";
+		// in this order: hike, bicycle, handicap, swim, climb, horse, camp, dog,
+		// fish, family
+		Object_TrailArticle.mTrailUse = new boolean[10];
+		Object_TrailArticle.sType = "";
+		Object_TrailArticle.sElevation = "";
+		Object_TrailArticle.sHighPoint = "";
+		Object_TrailArticle.sLowPoint = "";
+		Object_TrailArticle.sBestMonth = "";
+		Object_TrailArticle.sNearestCity = "";
+
+		Object_TrailArticle.bSaved = false;
+		Object_TrailArticle.jsonSaved = null;
+		Object_TrailArticle.jsonText = "";
+		
+		//map data
+		Object_TrailArticle.dCenterLat = 0;
+		Object_TrailArticle.dCenterLng = 0;
+		Object_TrailArticle.nCenterZoom = 0;
+		Object_TrailArticle.sMapType = "";
+		Object_TrailArticle.mMarkerLats = new double[50];
+		Object_TrailArticle.mMarkerLngs = new double[50];
+		Object_TrailArticle.mMarkerDescs = new String[50];
+		Object_TrailArticle.mMarkerTypes = new String[50];
+		
 	}
 
 	public static String sName = "";

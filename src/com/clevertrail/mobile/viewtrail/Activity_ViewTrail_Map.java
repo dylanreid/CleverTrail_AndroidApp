@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.clevertrail.mobile.R;
 import com.clevertrail.mobile.utils.MapMarkerOverlay;
+import com.clevertrail.mobile.utils.Utils;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
@@ -28,11 +29,13 @@ public class Activity_ViewTrail_Map extends MapActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.viewtrail_map);
-
-		createMap();
-
-		createMarkers();
+		if (Utils.isNetworkAvailable(this)) {
+			setContentView(R.layout.viewtrail_map);
+			createMap();
+			createMarkers();
+		} else {
+			setContentView(R.layout.viewtrail_nodata);
+		}
 
 	}
 
@@ -83,7 +86,7 @@ public class Activity_ViewTrail_Map extends MapActivity {
 			String sType = Object_TrailArticle.mMarkerTypes[i];
 			if (sType == null)
 				break;
-			
+
 			if (sType.compareTo("Poi") == 0) {
 				sType = "Point Of Interest";
 			}

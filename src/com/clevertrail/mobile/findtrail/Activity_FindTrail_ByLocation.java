@@ -8,13 +8,19 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -28,29 +34,31 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import com.clevertrail.mobile.Database_SavedTrails;
-import com.clevertrail.mobile.Object_TrailItem;
 import com.clevertrail.mobile.Object_TrailList;
 import com.clevertrail.mobile.R;
 import com.clevertrail.mobile.utils.TitleBar;
+import com.clevertrail.mobile.utils.Utils;
 
 public class Activity_FindTrail_ByLocation extends Activity {
 
 	private Spinner m_cbFindTrailByLocationProximity;
-	public Activity mActivity = null;
+	public Activity_FindTrail_ByLocation mActivity = null;
 	private ArrayAdapter<CharSequence> m_adapterForSpinner;
-	
+	public ProgressDialog mPD = null;
+
 	private LocationManager locationManager;
-	private Location currentLocation = null;	
+	private Location currentLocation = null;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		// Register the listener with the Location Manager to receive location updates
-		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+		// Register the listener with the Location Manager to receive location
+		// updates
+		locationManager = (LocationManager) this
+				.getSystemService(Context.LOCATION_SERVICE);
+		locationManager.requestLocationUpdates(
+				LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 
 		TitleBar.setCustomTitleBar(this, R.layout.findtrail_bylocation,
 				"CleverTrail", R.drawable.ic_viewtrailtab_map_unselected);
@@ -61,27 +69,31 @@ public class Activity_FindTrail_ByLocation extends Activity {
 
 		RadioButton rbCity = (RadioButton) findViewById(R.id.rbFindTrailByLocationCity);
 		rbCity.setOnClickListener(onclickRBCity);
-		
+
 		RadioButton rbProximity = (RadioButton) findViewById(R.id.rbFindTrailByLocationProximity);
 		rbProximity.setOnClickListener(onclickRBProximity);
-		
+
 		Button btnSearch = (Button) findViewById(R.id.btnSearchByLocation);
 		btnSearch.setOnClickListener(onclickSearch);
 	}
-	
+
 	// Define a listener that responds to location updates
 	LocationListener locationListener = new LocationListener() {
-	    public void onLocationChanged(Location location) {
-	      // Called when a new location is found by the network location provider.
-	      currentLocation = location;
-	    }
+		public void onLocationChanged(Location location) {
+			// Called when a new location is found by the network location
+			// provider.
+			currentLocation = location;
+		}
 
-	    public void onStatusChanged(String provider, int status, Bundle extras) {}
+		public void onStatusChanged(String provider, int status, Bundle extras) {
+		}
 
-	    public void onProviderEnabled(String provider) {}
+		public void onProviderEnabled(String provider) {
+		}
 
-	    public void onProviderDisabled(String provider) {}
-	  };
+		public void onProviderDisabled(String provider) {
+		}
+	};
 
 	private void createComboBox() {
 		m_cbFindTrailByLocationProximity = (Spinner) findViewById(R.id.cbFindTrailProximity);
@@ -89,78 +101,130 @@ public class Activity_FindTrail_ByLocation extends Activity {
 				android.R.layout.simple_spinner_item);
 		m_adapterForSpinner
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		m_adapterForSpinner.add("Within 1 mile");
 		m_adapterForSpinner.add("Within 5 miles");
+		m_adapterForSpinner.add("Within 10 miles");
 		m_adapterForSpinner.add("Within 25 miles");
 		m_adapterForSpinner.add("Within 50 miles");
+		m_adapterForSpinner.add("Within 100 miles");
 
 		m_cbFindTrailByLocationProximity.setAdapter(m_adapterForSpinner);
-		// by default make it 5 miles
+		// by default make it 25 miles
 		m_cbFindTrailByLocationProximity.setSelection(1);
 	}
-	
+
 	private OnClickListener onclickSearch = new OnClickListener() {
 		public void onClick(View v) {
-			double dSearchLat;
-			double dSearchLong;
-			
-			//is this searching by proximity
-			RadioButton rbProximity = (RadioButton) findViewById(R.id.rbFindTrailByLocationProximity);
-			if (rbProximity != null && rbProximity.isChecked()){
-				//search by proximity
-				
-				//do we have a location?
-				if (currentLocation != null){
-					dSearchLat = currentLocation.getLatitude();
-					dSearchLong = currentLocation.getLongitude();
-				} else {
-					showToastMessage("Your Current Location Cannot Be Found");
+			mActivity.mPD = ProgressDialog.show(mActivity, "",
+					"Contacting http://clevertrail.com ...", true);
+			new Thread(new Runnable() {
+				public void run() {
+					submitSearch();
+					mPD.dismiss();
 					return;
-				}				
-			} else {
-				EditText etCity = (EditText) findViewById(R.id.txtFindTrailByLocationCity);
-				if (etCity != null){
-					String sCity = etCity.getText().toString();
-					if (sCity.compareTo("") != 0){
-						//search by city
-						
-					} else {
-						//display error message if the city name is blank
-						showToastMessage("Please Enter A City Name");
-						return;
-					}
-				}				
-			}
-			
-			
-			//search for the given lat/long
-			JSONArray trailListJSON = fetchTrailListJSON();
-			
-			if (trailListJSON != null && trailListJSON.length() > 0) {
-				int len = trailListJSON.length();
-				Object_TrailList.clearTrails();
-				
-				try {
-					for (int i = 0; i < len; ++i) {
-						JSONObject trail = trailListJSON.getJSONObject(i);
-						Object_TrailList.addTrailWithJSON(trail);
-					}
-				} catch (JSONException e) {
 				}
-			}
-			
-			Intent i = new Intent(mActivity, 
-					Activity_FindTrail_DisplayMap.class);
-			mActivity.startActivity(i);
+			}).start();
 		}
 	};
-	
-	private void showToastMessage(CharSequence sMessage){
-		Context context = getApplicationContext();
-		int duration = Toast.LENGTH_LONG;
 
-		Toast toast = Toast.makeText(context, sMessage, duration);
-		toast.show();
+	private void submitSearch() {
+		double dSearchLat = 0;
+		double dSearchLong = 0;
+		double dSearchDistance = 0;
+
+		if (!Utils.isNetworkAvailable(mActivity)) {
+			Utils.showToastMessage(mActivity,
+					"You Don't Appear To Be Connected To The Internet");
+			return;
+		}
+
+		// is this searching by proximity
+		RadioButton rbProximity = (RadioButton) findViewById(R.id.rbFindTrailByLocationProximity);
+		if (rbProximity != null && rbProximity.isChecked()) {
+			// search by proximity
+
+			// do we have a location?
+			if (currentLocation != null) {
+				dSearchLat = currentLocation.getLatitude();
+				dSearchLong = currentLocation.getLongitude();
+			} else {
+				Utils.showToastMessage(mActivity,
+						"Your Current Location Cannot Be Found");
+				return;
+			}
+		} else {
+			EditText etCity = (EditText) findViewById(R.id.txtFindTrailByLocationCity);
+			if (etCity != null) {
+				String sCity = etCity.getText().toString();
+				if (sCity.compareTo("") != 0) {
+					JSONObject json = getLocationInfo(sCity);
+					if (json == null) {
+						Utils.showToastMessage(mActivity,
+								"We Could Not Connect To Google Maps");
+						return;
+					} else {
+						Point pt = getLatLong(json);
+						if (pt != null) {
+							dSearchLat = pt.dLat;
+							dSearchLong = pt.dLng;
+						} else {
+							Utils.showToastMessage(mActivity,
+									"Google Could Not Find Your City");
+							return;
+						}
+					}
+
+				} else {
+					// display error message if the city name is blank
+					Utils.showToastMessage(mActivity,
+							"Please Enter A City Name");
+					return;
+				}
+			}
+		}
+
+		int nProximityPos = m_cbFindTrailByLocationProximity
+				.getSelectedItemPosition();
+		switch (nProximityPos) {
+		case 0:
+			dSearchDistance = 5;
+			break;
+		case 1:
+			dSearchDistance = 10;
+			break;
+		case 2:
+			dSearchDistance = 25;
+			break;
+		case 3:
+			dSearchDistance = 50;
+			break;
+		case 4:
+			dSearchDistance = 100;
+			break;
+		}
+
+		// search for the given lat/long/dist
+		JSONArray trailListJSON = fetchTrailListJSON(dSearchLat, dSearchLong,
+				dSearchDistance);
+
+		if (trailListJSON != null && trailListJSON.length() > 0) {
+			int len = trailListJSON.length();
+
+			try {
+				Object_TrailList.clearTrails();
+				for (int i = 0; i < len; ++i) {
+					JSONObject trail = trailListJSON.getJSONObject(i);
+					Object_TrailList.addTrailWithJSON(trail);
+				}
+			} catch (JSONException e) {
+			}
+
+			Intent i = new Intent(mActivity,
+					Activity_FindTrail_DisplayMap.class);
+			mActivity.startActivity(i);
+		} else {
+			Utils.showToastMessage(mActivity,
+					"We Couldn't Find Any Trails - Try Increasing The Search Radius!");
+		}
 	}
 
 	private OnClickListener onclickRBCity = new OnClickListener() {
@@ -168,7 +232,7 @@ public class Activity_FindTrail_ByLocation extends Activity {
 			toggleRadiobuttons(false);
 		}
 	};
-	
+
 	private OnClickListener onclickRBProximity = new OnClickListener() {
 		public void onClick(View v) {
 			toggleRadiobuttons(true);
@@ -185,15 +249,94 @@ public class Activity_FindTrail_ByLocation extends Activity {
 		rbCity.setChecked(!bProximity);
 
 	}
-	
-	
-	public JSONArray fetchTrailListJSON() {
+
+	public JSONObject getLocationInfo(String address) {
+		StringBuilder stringBuilder = new StringBuilder();
+		try {
+
+			address = address.replaceAll(" ", "%20");
+
+			HttpPost httppost = new HttpPost(
+					"http://maps.google.com/maps/api/geocode/json?address="
+							+ address + "&sensor=false");
+			HttpClient client = new DefaultHttpClient();
+			HttpResponse response;
+			stringBuilder = new StringBuilder();
+
+			response = client.execute(httppost);
+			HttpEntity entity = response.getEntity();
+			InputStream stream = entity.getContent();
+			int b;
+			while ((b = stream.read()) != -1) {
+				stringBuilder.append((char) b);
+			}
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+			return null;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		JSONObject jsonObject = new JSONObject();
+		try {
+			jsonObject = new JSONObject(stringBuilder.toString());
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return jsonObject;
+	}
+
+	public Point getLatLong(JSONObject jsonObject) {
+
+		Double lon = new Double(0);
+		Double lat = new Double(0);
+
+		try {
+			String sStatus = ((String) jsonObject.get("status"));
+			if (sStatus.compareTo("OK") != 0)
+				return null;
+
+			lon = ((JSONArray) jsonObject.get("results")).getJSONObject(0)
+					.getJSONObject("geometry").getJSONObject("location")
+					.getDouble("lng");
+
+			lat = ((JSONArray) jsonObject.get("results")).getJSONObject(0)
+					.getJSONObject("geometry").getJSONObject("location")
+					.getDouble("lat");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+
+		}
+
+		return new Point(lat, lon);
+	}
+
+	private class Point {
+
+		public Point(double lat, double lng) {
+			dLat = lat;
+			dLng = lng;
+		}
+
+		public double dLat;
+		public double dLng;
+	}
+
+	protected JSONArray fetchTrailListJSON(double dSearchLat,
+			double dSearchLong, double dSearchDistance) {
 		JSONArray returnJSON = null;
-		Bundle b = getIntent().getExtras();
-	
+
 		HttpURLConnection urlConnection = null;
 		try {
-			String requestURL = "http://clevertrail.com/ajax/handleGetArticles.php?name=bear";
+			String params = "lat=" + dSearchLat + "&lng=" + dSearchLong
+					+ "&dist=" + dSearchDistance;
+			String requestURL = "http://clevertrail.com/ajax/handleGetArticles.php?"
+					+ params;
 
 			URL url = new URL(requestURL);
 			urlConnection = (HttpURLConnection) url.openConnection();
