@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 
 import com.clevertrail.mobile.viewtrail.Activity_ViewTrail;
+import com.clevertrail.mobile.viewtrail.Object_TrailArticle;
 import com.google.android.maps.MapView;
 import com.google.android.maps.OverlayItem;
 import com.readystatesoftware.mapviewballoons.BalloonItemizedOverlay;
@@ -40,10 +41,7 @@ public class MapTrailOverlay extends BalloonItemizedOverlay<OverlayItem> {
 	@Override
 	protected boolean onBalloonTap(int index, OverlayItem item) {
 		if (mActivity != null) {
-			Intent i = new Intent(mActivity,
-					Activity_ViewTrail.class);
-			i.putExtra("name", item.getTitle());
-			mActivity.startActivity(i);
+			Object_TrailArticle.loadTrailArticle(mActivity, item.getTitle());
 		}
 		return true;
 	}

@@ -61,11 +61,11 @@ public class Activity_MainMenu extends Activity {
 	private OnClickListener onclickSavedTrails = new OnClickListener() {
 		public void onClick(View v) {
 			mActivity.mPD = ProgressDialog.show(mActivity, "",
-					"Fetching Saved Trail List...", true);
+					"Loading Saved Trail List...", true);
 
 			new Thread(new Runnable() {
 				public void run() {
-					int status = fetchTrailsFromDatabase();
+					int status = Database_SavedTrails.openSavedTrails(mActivity);
 					mPD.dismiss();
 					if (status > 0)
 						Utils.showToastMessage(mActivity,
@@ -77,47 +77,7 @@ public class Activity_MainMenu extends Activity {
 		}
 	};
 
-	// 0: successful
-	// 1: database error
-	// 2: json error
-	private int fetchTrailsFromDatabase() {
-		JSONArray jsonArray = null;
-		Database_SavedTrails db = new Database_SavedTrails(this);
-		db.openToRead();
-		String jsonString = db.getJSONString();
-
-		try {
-			jsonArray = new JSONArray(jsonString);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return 1;
-		}
-
-		db.close();
-
-		Object_TrailList.clearTrails();		
-		if (jsonArray != null && jsonArray.length() > 0) {
-			int len = jsonArray.length();
-			try {				
-				for (int i = 0; i < len && i < 20; ++i) {
-					JSONObject trail = jsonArray.getJSONObject(i);
-					Object_TrailList.addTrailWithJSON(trail);
-				}
-			} catch (JSONException e) {
-				return 2;
-			}
-		}
-
-		int icon = R.drawable.ic_viewtrailtab_save_unselected;
-		String title = "CleverTrail - Saved Trails";
-		Intent i = new Intent(mActivity, Activity_ListTrails.class);
-		i.putExtra("icon", icon);
-		i.putExtra("title", title);
-		mActivity.startActivity(i);
-
-		return 0;
-	}
+	
 
 	private OnClickListener onclickAboutClevertrail = new OnClickListener() {
 		public void onClick(View v) {

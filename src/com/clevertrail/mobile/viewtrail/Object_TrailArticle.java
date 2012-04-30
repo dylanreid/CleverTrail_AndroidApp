@@ -1,19 +1,139 @@
 package com.clevertrail.mobile.viewtrail;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
+
+import com.clevertrail.mobile.Database_SavedTrails;
+import com.clevertrail.mobile.utils.Utils;
+
 public class Object_TrailArticle {
+
+	public static void loadTrailArticle(Activity activity, String sTrailName) {
+		mActivity = activity;
+		sName = sTrailName;
+		mPD = ProgressDialog.show(activity, "",
+				"Loading " + sTrailName + " ...", true);
+
+		new Thread(new Runnable() {
+			public void run() {
+				int status = Object_TrailArticle.loadTrailArticle_helper(mActivity, sName);
+				mPD.dismiss();
+				if (status > 0)
+					Utils.showToastMessage(mActivity,
+							"Error Contacting http://clevertrail.com");
+
+			}
+		}).start();
+	}
+
+	// 0: success
+	// 1: param error
+	// 2: connection error
+	// 3: response error
+	private static int loadTrailArticle_helper(Activity activity,
+			String sTrailName) {
+
+		String sResponseLine = "";
+		if (sTrailName == null || sTrailName == "")
+			return 1;
+
+		HttpURLConnection urlConnection = null;
+		try {
+			String requestURL = String
+					.format("http://clevertrail.com/ajax/handleGetArticleJSONByName.php?name=%s",
+							Uri.encode(sTrailName));
+
+			URL url = new URL(requestURL);
+			urlConnection = (HttpURLConnection) url.openConnection();
+
+			InputStream in = new BufferedInputStream(
+					urlConnection.getInputStream());
+
+			BufferedReader r = new BufferedReader(new InputStreamReader(in));
+
+			sResponseLine = r.readLine();
+
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return 2;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			// could not connect to clevertrail.com
+			e.printStackTrace();
+			return 2;
+		} finally {
+			if (urlConnection != null)
+				urlConnection.disconnect();
+		}
+
+		JSONObject json = null;
+		try {
+			if (sResponseLine != "")
+				json = new JSONObject(sResponseLine);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return 3;
+		}
+
+		Object_TrailArticle.bSaved = false;
+
+		// if json is null, we might not have internet activity so check saved
+		// files
+		if (json == null) {
+			Database_SavedTrails db = new Database_SavedTrails(activity);
+			db.openToRead();
+			String jsonString = db.getJSONString(sTrailName);
+			try {
+				json = new JSONObject(jsonString);
+
+				// if we found the json object in the db, mark it as saved
+				if (json != null) {
+					Object_TrailArticle.bSaved = true;
+				}
+
+			} catch (JSONException e) {
+				return 3;
+			}
+			db.close();
+		}
+
+		if (json != null) {
+			Object_TrailArticle.createFromJSON(sTrailName, json);
+			Object_TrailArticle.jsonText = sResponseLine;
+			
+			Intent i = new Intent(mActivity,
+					Activity_ViewTrail.class);			
+			mActivity.startActivity(i);
+			
+			return 0;
+		}
+		return 3;
+	}
 
 	public static void createFromJSON(String name, JSONObject json) {
 
 		try {
 			if (json != null) {
 				Object_TrailArticle.clearData();
-				
+
 				jsonSaved = json;
 				sName = name;
 
@@ -110,32 +230,41 @@ public class Object_TrailArticle {
 						.compareTo("1") == 0);
 				Object_TrailArticle.mTrailUse[9] = (json.getString("family")
 						.compareTo("1") == 0);
-				
+
 				String jsonMapString = json.getString("jsonMapdata");
-				if (jsonMapString.compareTo("") != 0){
+				if (jsonMapString.compareTo("") != 0) {
 					JSONObject jsonMapData = new JSONObject(jsonMapString);
-					
+
 					if (jsonMapData != null) {
-						Object_TrailArticle.dCenterLat = jsonMapData.getDouble("centerLat");
-						Object_TrailArticle.dCenterLng = jsonMapData.getDouble("centerLong");
-						Object_TrailArticle.nCenterZoom = jsonMapData.getInt("zoom");
-						Object_TrailArticle.sMapType = jsonMapData.getString("mapType");												
-						
-						JSONArray arMarkers = jsonMapData.getJSONArray("markerLats");
+						Object_TrailArticle.dCenterLat = jsonMapData
+								.getDouble("centerLat");
+						Object_TrailArticle.dCenterLng = jsonMapData
+								.getDouble("centerLong");
+						Object_TrailArticle.nCenterZoom = jsonMapData
+								.getInt("zoom");
+						Object_TrailArticle.sMapType = jsonMapData
+								.getString("mapType");
+
+						JSONArray arMarkers = jsonMapData
+								.getJSONArray("markerLats");
 						for (int i = 0; i < arMarkers.length(); i++) {
-							Object_TrailArticle.mMarkerLats[i] = arMarkers.getDouble(i);
+							Object_TrailArticle.mMarkerLats[i] = arMarkers
+									.getDouble(i);
 						}
 						arMarkers = jsonMapData.getJSONArray("markerLongs");
 						for (int i = 0; i < arMarkers.length(); i++) {
-							Object_TrailArticle.mMarkerLngs[i] = arMarkers.getDouble(i);
+							Object_TrailArticle.mMarkerLngs[i] = arMarkers
+									.getDouble(i);
 						}
 						arMarkers = jsonMapData.getJSONArray("markerDescs");
 						for (int i = 0; i < arMarkers.length(); i++) {
-							Object_TrailArticle.mMarkerDescs[i] = arMarkers.getString(i);
+							Object_TrailArticle.mMarkerDescs[i] = arMarkers
+									.getString(i);
 						}
 						arMarkers = jsonMapData.getJSONArray("markerTypes");
 						for (int i = 0; i < arMarkers.length(); i++) {
-							Object_TrailArticle.mMarkerTypes[i] = arMarkers.getString(i);
+							Object_TrailArticle.mMarkerTypes[i] = arMarkers
+									.getString(i);
 						}
 					}
 				}
@@ -152,8 +281,8 @@ public class Object_TrailArticle {
 		sText = sText.replace("&amp;", "&");
 		return sText;
 	}
-	
-	public static void clearData(){
+
+	public static void clearData() {
 		Object_TrailArticle.sName = "";
 
 		Object_TrailArticle.sOverview = "";
@@ -169,7 +298,8 @@ public class Object_TrailArticle {
 		Object_TrailArticle.sDifficulty = "";
 		Object_TrailArticle.sDistance = "";
 		Object_TrailArticle.sTime = "";
-		// in this order: hike, bicycle, handicap, swim, climb, horse, camp, dog,
+		// in this order: hike, bicycle, handicap, swim, climb, horse, camp,
+		// dog,
 		// fish, family
 		Object_TrailArticle.mTrailUse = new boolean[10];
 		Object_TrailArticle.sType = "";
@@ -182,8 +312,8 @@ public class Object_TrailArticle {
 		Object_TrailArticle.bSaved = false;
 		Object_TrailArticle.jsonSaved = null;
 		Object_TrailArticle.jsonText = "";
-		
-		//map data
+
+		// map data
 		Object_TrailArticle.dCenterLat = 0;
 		Object_TrailArticle.dCenterLng = 0;
 		Object_TrailArticle.nCenterZoom = 0;
@@ -192,7 +322,7 @@ public class Object_TrailArticle {
 		Object_TrailArticle.mMarkerLngs = new double[50];
 		Object_TrailArticle.mMarkerDescs = new String[50];
 		Object_TrailArticle.mMarkerTypes = new String[50];
-		
+
 	}
 
 	public static String sName = "";
@@ -223,8 +353,8 @@ public class Object_TrailArticle {
 	public static boolean bSaved = false;
 	public static JSONObject jsonSaved = null;
 	public static String jsonText = "";
-	
-	//map data
+
+	// map data
 	public static double dCenterLat;
 	public static double dCenterLng;
 	public static int nCenterZoom;
@@ -235,4 +365,8 @@ public class Object_TrailArticle {
 	public static String mMarkerTypes[] = new String[50];
 
 	public static ArrayList<Object_TrailPhoto> arPhotos;
+
+	// progress dialog
+	public static ProgressDialog mPD;
+	private static Activity mActivity;
 }

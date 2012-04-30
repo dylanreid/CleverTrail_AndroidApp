@@ -37,11 +37,8 @@ public class View_ListTrailsList extends ListView {
 					long arg3) {
 				
 				if (mActivity != null) {
-					Intent i = new Intent(mActivity,
-							Activity_ViewTrail.class);
 					String sName = mActivity.getTrailNameAt(position);
-					i.putExtra("name", sName);
-					mActivity.startActivity(i);
+					Object_TrailArticle.loadTrailArticle(mActivity, sName);					
 				}
 			}
 		});

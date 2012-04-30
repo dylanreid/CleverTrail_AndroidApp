@@ -25,6 +25,7 @@ import com.clevertrail.mobile.Database_SavedTrails;
 import com.clevertrail.mobile.R;
 import com.clevertrail.mobile.utils.FileCache;
 import com.clevertrail.mobile.utils.ImageLoader;
+import com.clevertrail.mobile.utils.Utils;
 
 public class Activity_ViewTrail_Save extends Activity {
 
@@ -33,6 +34,7 @@ public class Activity_ViewTrail_Save extends Activity {
 	private ExecutorService executorService;
 	private ProgressDialog mDialog;
 	private Activity_ViewTrail_Save mActivity;
+	public ProgressDialog mPD = null;
 	public static Activity_ViewTrail_Save mViewTrailSaveActivity;
 
 	public void onCreate(Bundle savedInstanceState) { 
@@ -69,7 +71,7 @@ public class Activity_ViewTrail_Save extends Activity {
 			db.close();
 		}
 
-		mSaved = (jsonString != "");
+		mSaved = (jsonString.compareTo("") != 0);
 
 		// draw the correct state
 		updateView();
@@ -111,10 +113,19 @@ public class Activity_ViewTrail_Save extends Activity {
 	private OnClickListener onclickGotoSavedTrails = new OnClickListener() {
 		public void onClick(View v) {
 			
-			Intent i = new Intent(mActivity,
-					Activity_ListTrails.class);
-			i.putExtra("savedtrails", true);			
-			mActivity.startActivity(i);
+			mActivity.mPD = ProgressDialog.show(mActivity, "",
+					"Loading Saved Trail List...", true);
+
+			new Thread(new Runnable() {
+				public void run() {
+					int status = Database_SavedTrails.openSavedTrails(mActivity);
+					mPD.dismiss();
+					if (status > 0)
+						Utils.showToastMessage(mActivity,
+								"Error Reading From Database");
+					return;
+				}
+			}).start();
 
 		}
 	};
