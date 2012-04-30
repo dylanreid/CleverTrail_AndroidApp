@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#E9F0EC">
+    android:background="#FFFFFF">
     <com.clevertrail.mobile.View_ListTrailsList
         android:id="@+id/traillist"
         android:layout_width="fill_parent"

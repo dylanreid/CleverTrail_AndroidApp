@@ -41,7 +41,8 @@ public class Activity_FindTrail_ByName extends Activity {
 		super.onCreate(savedInstanceState);
 
 		TitleBar.setCustomTitleBar(this, R.layout.findtrail_byname,
-				"CleverTrail", R.drawable.ic_viewtrailtab_details_unselected);
+				getString(R.string.title_findtrails),
+				R.drawable.ic_viewtrailtab_details_unselected);
 
 		mActivity = this;
 
@@ -53,8 +54,8 @@ public class Activity_FindTrail_ByName extends Activity {
 	private OnClickListener onclickSearchByNameButton = new OnClickListener() {
 		public void onClick(View v) {
 			if (!Utils.isNetworkAvailable(mActivity)) {
-				Utils.showToastMessage(mActivity,
-						"You Don't Appear To Be Connected To The Internet");
+				Utils.showMessage(mActivity,
+						R.string.error_nointernetconnection);
 				return;
 			}
 
@@ -65,36 +66,27 @@ public class Activity_FindTrail_ByName extends Activity {
 			if (sSearchText.compareTo("") != 0 && mActivity != null) {
 
 				mActivity.mPD = ProgressDialog.show(mActivity, "",
-						"Contacting http://clevertrail.com ...", true);
+						getString(R.string.progress_contactingclevertrail),
+						true);
 
 				mActivity.sSearchText = sSearchText;
 
 				new Thread(new Runnable() {
 					public void run() {
-						int status = submitSearch();
+						int error = submitSearch();
 						mPD.dismiss();
-						if (status > 0)
-							Utils.showToastMessage(mActivity,
-									"Error Contacting Clevertrail.com");
+						Utils.showMessage(mActivity, error);
 						return;
 					}
 				}).start();
 
 			} else {
 				// display message about empty string
-				Context context = getApplicationContext();
-				CharSequence text = "Please Enter A Trail Name";
-				int duration = Toast.LENGTH_LONG;
-
-				Toast toast = Toast.makeText(context, text, duration);
-				toast.show();
+				Utils.showMessage(mActivity, R.string.error_entertrailname);
 			}
 		}
 	};
 
-	// 0: success
-	// 1: error contacting/reading clevertrail
-	// 2: error reading data;
 	private int submitSearch() {
 		JSONArray jsonArray = null;
 
@@ -119,16 +111,16 @@ public class Activity_FindTrail_ByName extends Activity {
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return 1;
+			return R.string.error_contactingclevertrail;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			// could not connect to clevertrail.com
 			e.printStackTrace();
-			return 1;
+			return R.string.error_contactingclevertrail;
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return 1;
+			return R.string.error_corrupttrailinfo;
 		} finally {
 			if (urlConnection != null)
 				urlConnection.disconnect();
@@ -137,23 +129,22 @@ public class Activity_FindTrail_ByName extends Activity {
 		Object_TrailList.clearTrails();
 		if (jsonArray != null && jsonArray.length() > 0) {
 			int len = jsonArray.length();
-			try {				
+			try {
 				for (int i = 0; i < len && i < 20; ++i) {
 					JSONObject trail = jsonArray.getJSONObject(i);
 					Object_TrailList.addTrailWithJSON(trail);
 				}
 			} catch (JSONException e) {
-				return 2;
+				return R.string.error_corrupttrailinfo;
 			}
 		}
-		
+
 		int icon = R.drawable.ic_viewtrailtab_details_unselected;
-		String title = "CleverTrail - Found Trails";
 		Intent i = new Intent(mActivity, Activity_ListTrails.class);
 		i.putExtra("icon", icon);
-		i.putExtra("title", title);
+		i.putExtra("title", mActivity.getString(R.string.title_foundtrails));
 		mActivity.startActivity(i);
-		
+
 		return 0;
 	}
 }

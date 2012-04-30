@@ -28,7 +28,7 @@ public class Activity_MainMenu extends Activity {
 
 		mActivity = this;
 
-		TitleBar.setCustomTitleBar(this, R.layout.mainmenu, "CleverTrail", 0);
+		TitleBar.setCustomTitleBar(this, R.layout.mainmenu, getString(R.string.app_name), 0);
 
 		LinearLayout llFindTrailsLocation = (LinearLayout) findViewById(R.id.mainmenu_findtrails_location);
 		llFindTrailsLocation.setOnClickListener(onclickFindTrailsLocation);
@@ -61,15 +61,13 @@ public class Activity_MainMenu extends Activity {
 	private OnClickListener onclickSavedTrails = new OnClickListener() {
 		public void onClick(View v) {
 			mActivity.mPD = ProgressDialog.show(mActivity, "",
-					"Loading Saved Trail List...", true);
+					getString(R.string.progress_loadingsavedtrails), true);
 
 			new Thread(new Runnable() {
 				public void run() {
-					int status = Database_SavedTrails.openSavedTrails(mActivity);
+					int error = Database_SavedTrails.openSavedTrails(mActivity);
 					mPD.dismiss();
-					if (status > 0)
-						Utils.showToastMessage(mActivity,
-								"Error Reading From Database");
+					Utils.showMessage(mActivity, error);
 					return;
 				}
 			}).start();

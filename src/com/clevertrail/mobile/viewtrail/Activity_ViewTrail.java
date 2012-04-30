@@ -14,7 +14,7 @@ public class Activity_ViewTrail extends TabActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		String title = "CleverTrail - ";
+		String title = getString(R.string.app_name) + " - ";
 		title = title.concat(Object_TrailArticle.sName);
 		TitleBar.setCustomTitleBar(this, R.layout.viewtrail, title, 0);
 		

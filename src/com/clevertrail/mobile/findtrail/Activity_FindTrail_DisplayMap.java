@@ -10,7 +10,6 @@ import com.clevertrail.mobile.Object_TrailList;
 import com.clevertrail.mobile.R;
 import com.clevertrail.mobile.utils.MapTrailOverlay;
 import com.clevertrail.mobile.utils.TitleBar;
-import com.clevertrail.mobile.viewtrail.Object_TrailArticle;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
@@ -27,13 +26,11 @@ public class Activity_FindTrail_DisplayMap extends MapActivity {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		
 		TitleBar.setCustomTitleBar(this, R.layout.findtrail_displaymap,
-				"CleverTrail", R.drawable.ic_viewtrailtab_map_unselected);
+				getString(R.string.title_foundtrails), R.drawable.ic_viewtrailtab_map_unselected);
 
 		createMap();
-
 		createMarkers();
 	}
 

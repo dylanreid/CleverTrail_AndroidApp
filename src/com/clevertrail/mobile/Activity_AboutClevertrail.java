@@ -11,7 +11,7 @@ public class Activity_AboutClevertrail extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		TitleBar.setCustomTitleBar(this, R.layout.aboutclevertrail, "CleverTrail", R.drawable.aboutclevertrail);
+		TitleBar.setCustomTitleBar(this, R.layout.aboutclevertrail, getString(R.string.title_aboutclevertrail), R.drawable.aboutclevertrail);
 
 	}
 }

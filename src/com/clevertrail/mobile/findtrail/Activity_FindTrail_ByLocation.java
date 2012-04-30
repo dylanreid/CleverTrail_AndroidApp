@@ -61,7 +61,7 @@ public class Activity_FindTrail_ByLocation extends Activity {
 				LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 
 		TitleBar.setCustomTitleBar(this, R.layout.findtrail_bylocation,
-				"CleverTrail", R.drawable.ic_viewtrailtab_map_unselected);
+				getString(R.string.title_findtrails), R.drawable.ic_viewtrailtab_map_unselected);
 
 		mActivity = this;
 
@@ -101,11 +101,11 @@ public class Activity_FindTrail_ByLocation extends Activity {
 				android.R.layout.simple_spinner_item);
 		m_adapterForSpinner
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		m_adapterForSpinner.add("Within 5 miles");
-		m_adapterForSpinner.add("Within 10 miles");
-		m_adapterForSpinner.add("Within 25 miles");
-		m_adapterForSpinner.add("Within 50 miles");
-		m_adapterForSpinner.add("Within 100 miles");
+		m_adapterForSpinner.add(getString(R.string.proximityspinner_5miles));
+		m_adapterForSpinner.add(getString(R.string.proximityspinner_10miles));
+		m_adapterForSpinner.add(getString(R.string.proximityspinner_25miles));
+		m_adapterForSpinner.add(getString(R.string.proximityspinner_50miles));
+		m_adapterForSpinner.add(getString(R.string.proximityspinner_100miles));
 
 		m_cbFindTrailByLocationProximity.setAdapter(m_adapterForSpinner);
 		// by default make it 25 miles
@@ -115,26 +115,26 @@ public class Activity_FindTrail_ByLocation extends Activity {
 	private OnClickListener onclickSearch = new OnClickListener() {
 		public void onClick(View v) {
 			mActivity.mPD = ProgressDialog.show(mActivity, "",
-					"Contacting http://clevertrail.com ...", true);
+					getString(R.string.progress_contactingclevertrail), true);
 			new Thread(new Runnable() {
 				public void run() {
-					submitSearch();
+					int error = submitSearch();
 					mPD.dismiss();
+					Utils.showMessage(mActivity, error);						
 					return;
 				}
 			}).start();
 		}
 	};
 
-	private void submitSearch() {
+	//return error code if there was one
+	private int submitSearch() {
 		double dSearchLat = 0;
 		double dSearchLong = 0;
 		double dSearchDistance = 0;
 
 		if (!Utils.isNetworkAvailable(mActivity)) {
-			Utils.showToastMessage(mActivity,
-					"You Don't Appear To Be Connected To The Internet");
-			return;
+			return R.string.error_nointernetconnection;
 		}
 
 		// is this searching by proximity
@@ -147,9 +147,7 @@ public class Activity_FindTrail_ByLocation extends Activity {
 				dSearchLat = currentLocation.getLatitude();
 				dSearchLong = currentLocation.getLongitude();
 			} else {
-				Utils.showToastMessage(mActivity,
-						"Your Current Location Cannot Be Found");
-				return;
+				return R.string.error_currentlocationnotfound;
 			}
 		} else {
 			EditText etCity = (EditText) findViewById(R.id.txtFindTrailByLocationCity);
@@ -158,26 +156,19 @@ public class Activity_FindTrail_ByLocation extends Activity {
 				if (sCity.compareTo("") != 0) {
 					JSONObject json = getLocationInfo(sCity);
 					if (json == null) {
-						Utils.showToastMessage(mActivity,
-								"We Could Not Connect To Google Maps");
-						return;
+						return R.string.error_couldnotconnecttogooglemaps;
 					} else {
 						Point pt = getLatLong(json);
 						if (pt != null) {
 							dSearchLat = pt.dLat;
 							dSearchLong = pt.dLng;
 						} else {
-							Utils.showToastMessage(mActivity,
-									"Google Could Not Find Your City");
-							return;
+							return R.string.error_googlecouldnotfindcity;
 						}
 					}
 
 				} else {
-					// display error message if the city name is blank
-					Utils.showToastMessage(mActivity,
-							"Please Enter A City Name");
-					return;
+					return R.string.error_entercityname;
 				}
 			}
 		}
@@ -216,15 +207,16 @@ public class Activity_FindTrail_ByLocation extends Activity {
 					Object_TrailList.addTrailWithJSON(trail);
 				}
 			} catch (JSONException e) {
+				return R.string.error_corrupttrailinfo;
 			}
 
 			Intent i = new Intent(mActivity,
 					Activity_FindTrail_DisplayMap.class);
 			mActivity.startActivity(i);
 		} else {
-			Utils.showToastMessage(mActivity,
-					"We Couldn't Find Any Trails - Try Increasing The Search Radius!");
+			return R.string.error_notrailsfoundinsearchradius;
 		}
+		return 0;
 	}
 
 	private OnClickListener onclickRBCity = new OnClickListener() {

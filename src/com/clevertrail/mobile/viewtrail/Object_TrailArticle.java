@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.net.Uri;
 
 import com.clevertrail.mobile.Database_SavedTrails;
+import com.clevertrail.mobile.R;
 import com.clevertrail.mobile.utils.Utils;
 
 public class Object_TrailArticle {
@@ -28,30 +29,26 @@ public class Object_TrailArticle {
 		mActivity = activity;
 		sName = sTrailName;
 		mPD = ProgressDialog.show(activity, "",
-				"Loading " + sTrailName + " ...", true);
+				activity.getString(R.string.progress_loading) + sTrailName,
+				true);
 
 		new Thread(new Runnable() {
 			public void run() {
-				int status = Object_TrailArticle.loadTrailArticle_helper(mActivity, sName);
+				int error = Object_TrailArticle.loadTrailArticle_helper(
+						mActivity, sName);
 				mPD.dismiss();
-				if (status > 0)
-					Utils.showToastMessage(mActivity,
-							"Error Contacting http://clevertrail.com");
+				Utils.showMessage(mActivity, error);
 
 			}
 		}).start();
 	}
 
-	// 0: success
-	// 1: param error
-	// 2: connection error
-	// 3: response error
 	private static int loadTrailArticle_helper(Activity activity,
 			String sTrailName) {
 
 		String sResponseLine = "";
 		if (sTrailName == null || sTrailName == "")
-			return 1;
+			return R.string.error_notrailname;
 
 		HttpURLConnection urlConnection = null;
 		try {
@@ -72,12 +69,12 @@ public class Object_TrailArticle {
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return 2;
+			return R.string.error_contactingclevertrail;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			// could not connect to clevertrail.com
 			e.printStackTrace();
-			return 2;
+			return R.string.error_contactingclevertrail;
 		} finally {
 			if (urlConnection != null)
 				urlConnection.disconnect();
@@ -90,7 +87,7 @@ public class Object_TrailArticle {
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return 3;
+			return R.string.error_corrupttrailinfo;
 		}
 
 		Object_TrailArticle.bSaved = false;
@@ -110,7 +107,7 @@ public class Object_TrailArticle {
 				}
 
 			} catch (JSONException e) {
-				return 3;
+				return R.string.error_corrupttrailinfo;
 			}
 			db.close();
 		}
@@ -118,14 +115,13 @@ public class Object_TrailArticle {
 		if (json != null) {
 			Object_TrailArticle.createFromJSON(sTrailName, json);
 			Object_TrailArticle.jsonText = sResponseLine;
-			
-			Intent i = new Intent(mActivity,
-					Activity_ViewTrail.class);			
+
+			Intent i = new Intent(mActivity, Activity_ViewTrail.class);
 			mActivity.startActivity(i);
-			
+
 			return 0;
 		}
-		return 3;
+		return R.string.error_corrupttrailinfo;
 	}
 
 	public static void createFromJSON(String name, JSONObject json) {

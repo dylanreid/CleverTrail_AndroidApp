@@ -20,7 +20,7 @@ public class Activity_ListTrails extends Activity {
 
 		arTrails = Object_TrailList.arTrails;
 		int icon = R.drawable.ic_viewtrailtab_save_unselected;
-		String title = "CleverTrail - Trail List";
+		String title = getString(R.string.title_traillist);
 
 		Bundle b = getIntent().getExtras();
 		if (b != null) {
@@ -43,7 +43,7 @@ public class Activity_ListTrails extends Activity {
 		}
 		
 		if (arTrails != null && arTrails.size() >= 20) {
-			Utils.showToastMessage(this, "Showing Only The First 20 Results");
+			Utils.showMessage(this, R.string.alert_showing20trails);
 		}
 	}
 

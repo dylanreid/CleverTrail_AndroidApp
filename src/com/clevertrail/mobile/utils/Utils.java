@@ -3,6 +3,8 @@ package com.clevertrail.mobile.utils;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.clevertrail.mobile.R;
+
 import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -25,17 +27,26 @@ public class Utils {
 	}
 
 	public static boolean isNetworkAvailable(Activity activity) {
-				ConnectivityManager connectivityManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager connectivityManager = (ConnectivityManager) activity
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetworkInfo = connectivityManager
 				.getActiveNetworkInfo();
 		return activeNetworkInfo != null;
 	}
-	
-	public static void showToastMessage(Activity activity, CharSequence sMessage){
-		Context context = activity.getApplicationContext();
-		int duration = Toast.LENGTH_LONG;
 
-		Toast toast = Toast.makeText(context, sMessage, duration);
-		toast.show();
+
+	public static void showMessage(final Activity activity, final int nMessage) {
+		if (nMessage > 0) {
+			activity.runOnUiThread(new Runnable() {
+				public void run() {
+					Context context = activity.getApplicationContext();
+					int duration = Toast.LENGTH_LONG;
+
+					Toast toast = Toast.makeText(context,
+							activity.getText(nMessage), duration);
+					toast.show();
+				}
+			});
+		}
 	}
 }

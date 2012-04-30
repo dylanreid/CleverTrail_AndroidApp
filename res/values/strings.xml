@@ -2,5 +2,37 @@
 <resources>
 
     <string name="app_name">CleverTrail</string>
+    
+    <string name="title_foundtrails">CleverTrail - Found Trails</string>
+    <string name="title_findtrails">CleverTrail - Find Trails</string>
+    <string name="title_aboutclevertrail">CleverTrail - About</string>
+    <string name="title_traillist">CleverTrail - Trail List</string>
+    
+    <string name="progress_contactingclevertrail">Contacting http://clevertrail.com</string>
+    <string name="progress_loadingsavedtrails">Loading Saved Trails</string>
+    <string name="progress_savingtrail">Saving Trail</string>
+    <string name="progress_cancel">Cancel</string>
+    <string name="progress_loading">Loading</string>
+    
+    <string name="alert_showing20trails">Only Displaying The First 20 Trail Results</string>
+    
+    <string name="error_readingdatabase">Error Reading From Database</string>
+    <string name="error_corrupttrailindatabase">Corrupt Trail In Database</string>
+    <string name="error_nointernetconnection">You Don\'t Appear To Be Connected To The Internet</string>
+    <string name="error_currentlocationnotfound">Your Current Location Cannot Be Found</string>
+    <string name="error_couldnotconnecttogooglemaps">We Could Not Connect To Google Maps</string>
+    <string name="error_googlecouldnotfindcity">Google Could Not Find Your City</string>
+    <string name="error_entercityname">Please Enter A City Name</string>
+    <string name="error_notrailsfoundinsearchradius">We Couldn\'t Find Any Trails - Try Increasing The Search Radius!</string>
+    <string name="error_corrupttrailinfo">The Trail Information Appears Corrupt</string>
+    <string name="error_contactingclevertrail">There Was An Error Contacting CleverTrail</string>
+    <string name="error_entertrailname">Please Enter A Trail Name</string>
+    <string name="error_notrailname">No Trail Name</string>
+    
+    <string name="proximityspinner_5miles">Within 5 miles</string>
+    <string name="proximityspinner_10miles">Within 10 miles</string>
+    <string name="proximityspinner_25miles">Within 25 miles</string>
+    <string name="proximityspinner_50miles">Within 50 miles</string>
+    <string name="proximityspinner_100miles">Within 100 miles</string>
 
 </resources>

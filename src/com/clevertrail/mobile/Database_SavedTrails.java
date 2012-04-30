@@ -126,9 +126,7 @@ public class Database_SavedTrails {
 		return sReturn;
 	}
 
-	// 0: successful
-	// 1: database error
-	// 2: json error
+
 	public static int openSavedTrails(Activity activity) {
 		JSONArray jsonArray = null;
 		Database_SavedTrails db = new Database_SavedTrails(activity);
@@ -140,7 +138,7 @@ public class Database_SavedTrails {
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return 1;
+			return R.string.error_corrupttrailindatabase;
 		}
 
 		db.close();
@@ -154,7 +152,7 @@ public class Database_SavedTrails {
 					Object_TrailList.addTrailWithJSON(trail);
 				}
 			} catch (JSONException e) {
-				return 2;
+				return R.string.error_corrupttrailindatabase;
 			}
 		}
 

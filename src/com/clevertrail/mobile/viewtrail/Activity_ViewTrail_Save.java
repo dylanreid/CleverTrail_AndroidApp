@@ -32,30 +32,30 @@ public class Activity_ViewTrail_Save extends Activity {
 	private Database_SavedTrails db;
 	private boolean mSaved = false;
 	private ExecutorService executorService;
-	private ProgressDialog mDialog;
+	private ProgressDialog mSavingDialog;
 	private Activity_ViewTrail_Save mActivity;
-	public ProgressDialog mPD = null;
+	public ProgressDialog mLoadingDialog;
 	public static Activity_ViewTrail_Save mViewTrailSaveActivity;
 
-	public void onCreate(Bundle savedInstanceState) { 
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mActivity = this;
 
-		//open/create the database
+		// open/create the database
 		db = new Database_SavedTrails(this);
 
-		//used in the pdhandler
-		mViewTrailSaveActivity = this; 
+		// used in the pdhandler
+		mViewTrailSaveActivity = this;
 
 		setContentView(R.layout.viewtrail_save);
 
 		// register events
 		Button btnSaveTrail = (Button) findViewById(R.id.btnSaveTrail);
 		btnSaveTrail.setOnClickListener(onclickSaveTrailButton);
-		
+
 		Button btnGotoSavedTrails = (Button) findViewById(R.id.btnSaveGoToSavedTrails);
-		btnGotoSavedTrails.setOnClickListener(onclickGotoSavedTrails);		
-		
+		btnGotoSavedTrails.setOnClickListener(onclickGotoSavedTrails);
+
 		// register an executor service
 		executorService = Executors.newFixedThreadPool(5);
 
@@ -90,46 +90,44 @@ public class Activity_ViewTrail_Save extends Activity {
 			btnSaveTrail.setText("Save This Trail");
 		}
 	}
-	
+
 	private void deleteTrail() {
-		//delete trail
+		// delete trail
 		db.openToWrite();
 		db.remove(Object_TrailArticle.sName);
 		db.close();
 		FileCache fc = new FileCache(this.getApplicationContext());
-		
-		//delete files
+
+		// delete files
 		ArrayList<Object_TrailPhoto> photos = Object_TrailArticle.arPhotos;
 		for (int i = 0; i < photos.size(); i++) {
 			Object_TrailPhoto photo = photos.get(i);
 			File f = fc.getFile(photo.mURL);
 			f.delete();
 		}
-		
+
 		mSaved = false;
 		updateView();
 	}
-	
+
 	private OnClickListener onclickGotoSavedTrails = new OnClickListener() {
 		public void onClick(View v) {
-			
-			mActivity.mPD = ProgressDialog.show(mActivity, "",
-					"Loading Saved Trail List...", true);
+
+			mActivity.mLoadingDialog = ProgressDialog.show(mActivity, "",
+					getString(R.string.progress_loadingsavedtrails), true);
 
 			new Thread(new Runnable() {
 				public void run() {
-					int status = Database_SavedTrails.openSavedTrails(mActivity);
-					mPD.dismiss();
-					if (status > 0)
-						Utils.showToastMessage(mActivity,
-								"Error Reading From Database");
+					int error = Database_SavedTrails.openSavedTrails(mActivity);
+					mLoadingDialog.dismiss();
+					Utils.showMessage(mActivity, error);
 					return;
 				}
 			}).start();
 
 		}
 	};
-	
+
 	private OnClickListener onclickSaveTrailButton = new OnClickListener() {
 		public void onClick(View v) {
 			if (Object_TrailArticle.sName != "") {
@@ -138,23 +136,24 @@ public class Activity_ViewTrail_Save extends Activity {
 				if (btnSaveTrail.getText() == "Un-Save This Trail") {
 					deleteTrail();
 				} else {
-					mDialog = new ProgressDialog(v.getContext());
-					mDialog.setMessage("Saving Trail");
-					mDialog.setIndeterminate(false);
-					mDialog.setCancelable(true);
-					mDialog.setButton("Cancel", new DialogInterface.OnClickListener() 
-				    {
-				        public void onClick(DialogInterface dialog, int which) 
-				        {
-				            // Use either finish() or return() to either close the activity or just the dialog
-				        	deleteTrail();
-				        	mDialog.dismiss();
-				        	return;
-				        }
-				    });
-					mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-					mDialog.show();
-					
+					mSavingDialog = new ProgressDialog(v.getContext());
+					mSavingDialog.setMessage(getString(R.string.progress_savingtrail));
+					mSavingDialog.setIndeterminate(false);
+					mSavingDialog.setCancelable(true);
+					mSavingDialog.setButton(getString(R.string.progress_cancel),
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int which) {
+									// Use either finish() or return() to either
+									// close the activity or just the dialog
+									deleteTrail();
+									mSavingDialog.dismiss();
+									return;
+								}
+							});
+					mSavingDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+					mSavingDialog.show();
+
 					executorService.submit(new SaveTrail(v.getContext()));
 				}
 			}
@@ -191,13 +190,14 @@ public class Activity_ViewTrail_Save extends Activity {
 						pdHandler.sendEmptyMessage(incrementSize);
 
 						Object_TrailPhoto photo = photos.get(i);
-						
-						//in case the user has clicked cancel
+
+						// in case the user has clicked cancel
 						if (mViewTrailSaveActivity.mSaved == false)
 							return;
-						
-						//using imageLoader will cache the image on the file system						
-						imageLoader.getBitmapFromFile(photo.mURL);		
+
+						// using imageLoader will cache the image on the file
+						// system
+						imageLoader.getBitmapFromFile(photo.mURL);
 						imageLoader.getBitmapFromFile(photo.mURL120px);
 					}
 				}
@@ -210,12 +210,12 @@ public class Activity_ViewTrail_Save extends Activity {
 	final Handler pdHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			if (msg.what == 0) {
-				if (mViewTrailSaveActivity != null) {					
+				if (mViewTrailSaveActivity != null) {
 					mViewTrailSaveActivity.updateView();
 				}
-				mDialog.dismiss();
+				mSavingDialog.dismiss();
 			} else {
-				mDialog.incrementProgressBy(msg.what);
+				mSavingDialog.incrementProgressBy(msg.what);
 			}
 		}
 	};
