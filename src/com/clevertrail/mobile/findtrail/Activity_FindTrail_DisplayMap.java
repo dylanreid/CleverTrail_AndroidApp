@@ -91,6 +91,11 @@ public class Activity_FindTrail_DisplayMap extends MapActivity {
 					sDescription = sDescription.concat("\n");
 				sDescription = sDescription.concat("Trail Type: " + trail.sTrailType);
 			}
+			if (trail.sNearestCity.compareTo("") != 0){
+				if (sDescription.compareTo("") != 0)
+					sDescription = sDescription.concat("\n");
+				sDescription = sDescription.concat("Nearest City: " + trail.sNearestCity);
+			}
 
 			OverlayItem overlayItem = new OverlayItem(point, trail.sName,
 					sDescription);

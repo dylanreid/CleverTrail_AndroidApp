@@ -3,10 +3,10 @@ package com.clevertrail.mobile.utils;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import com.clevertrail.mobile.R;
-
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
@@ -39,12 +39,16 @@ public class Utils {
 		if (nMessage > 0) {
 			activity.runOnUiThread(new Runnable() {
 				public void run() {
-					Context context = activity.getApplicationContext();
-					int duration = Toast.LENGTH_LONG;
-
-					Toast toast = Toast.makeText(context,
-							activity.getText(nMessage), duration);
-					toast.show();
+					AlertDialog ad = new AlertDialog.Builder(activity).create();
+					ad.setCancelable(false); // This blocks the 'BACK' button
+					ad.setMessage(activity.getText(nMessage));
+					ad.setButton("OK", new DialogInterface.OnClickListener() {
+					    @Override
+					    public void onClick(DialogInterface dialog, int which) {
+					        dialog.dismiss();                    
+					    }
+					});
+					ad.show();
 				}
 			});
 		}

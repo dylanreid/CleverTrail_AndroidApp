@@ -109,7 +109,7 @@ public class Activity_FindTrail_ByLocation extends Activity {
 
 		m_cbFindTrailByLocationProximity.setAdapter(m_adapterForSpinner);
 		// by default make it 25 miles
-		m_cbFindTrailByLocationProximity.setSelection(1);
+		m_cbFindTrailByLocationProximity.setSelection(2);
 	}
 
 	private OnClickListener onclickSearch = new OnClickListener() {
@@ -246,6 +246,7 @@ public class Activity_FindTrail_ByLocation extends Activity {
 		StringBuilder stringBuilder = new StringBuilder();
 		try {
 
+			address = address.trim();
 			address = address.replaceAll(" ", "%20");
 
 			HttpPost httppost = new HttpPost(

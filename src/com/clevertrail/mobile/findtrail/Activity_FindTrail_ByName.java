@@ -93,9 +93,10 @@ public class Activity_FindTrail_ByName extends Activity {
 		HttpURLConnection urlConnection = null;
 		try {
 			String requestURL = "http://clevertrail.com/ajax/handleGetArticles.php";
+			String sSearch = mActivity.sSearchText;
+			sSearch = sSearch.replace(" ", "%20");
 
-			requestURL = requestURL.concat("?name=").concat(
-					mActivity.sSearchText);
+			requestURL = requestURL.concat("?name=").concat(sSearch);
 
 			URL url = new URL(requestURL);
 			urlConnection = (HttpURLConnection) url.openConnection();

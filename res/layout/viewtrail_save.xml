@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#E9F0EC" >
+    android:background="#FFFFFF" >
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -45,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="Save trail photos (takes up more space)"
+            android:text="Save trail photos (may take up more memory)"
             android:textColor="#000"
             android:textSize="12sp" />
 
@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             android:text="Note: Due to caching restrictions by Google, we are not currently able to save maps for offline use."
             android:textColor="#000000"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
     </LinearLayout>
 
 </ScrollView>

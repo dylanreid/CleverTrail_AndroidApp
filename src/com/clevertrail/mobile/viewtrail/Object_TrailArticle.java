@@ -29,7 +29,7 @@ public class Object_TrailArticle {
 		mActivity = activity;
 		sName = sTrailName;
 		mPD = ProgressDialog.show(activity, "",
-				activity.getString(R.string.progress_loading) + sTrailName,
+				activity.getString(R.string.progress_loading) + " " + sTrailName,
 				true);
 
 		new Thread(new Runnable() {

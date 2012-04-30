@@ -46,7 +46,7 @@ public class Activity_ViewTrail_Stats extends Activity {
 
 		ImageLoader imageLoader = new ImageLoader(getApplicationContext());
 		ImageView image = (ImageView) findViewById(R.id.mainimage);
-		if (Object_TrailArticle.mImage != null)
+		if (Object_TrailArticle.mImage != null && Object_TrailArticle.mImage.mURL.compareTo("") != 0)
 			imageLoader.DisplayImage(Object_TrailArticle.mImage.mURL, image);
 
 		if (Object_TrailArticle.sImageCredit.compareTo("") != 0) {
