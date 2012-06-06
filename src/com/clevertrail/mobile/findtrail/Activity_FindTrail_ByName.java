@@ -1,3 +1,20 @@
+/* 
+	Copyright (C) 2012 Dylan Reid
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package com.clevertrail.mobile.findtrail;
 
 import java.io.BufferedInputStream;
@@ -31,6 +48,7 @@ import com.clevertrail.mobile.R;
 import com.clevertrail.mobile.utils.TitleBar;
 import com.clevertrail.mobile.utils.Utils;
 
+//class to find trails by name
 public class Activity_FindTrail_ByName extends Activity {
 
 	public Activity_FindTrail_ByName mActivity = null;
@@ -40,6 +58,7 @@ public class Activity_FindTrail_ByName extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		//create the titlebar
 		TitleBar.setCustomTitleBar(this, R.layout.findtrail_byname,
 				getString(R.string.title_findtrails),
 				R.drawable.ic_viewtrailtab_details_unselected);
@@ -51,6 +70,7 @@ public class Activity_FindTrail_ByName extends Activity {
 		btnSaveTrail.setOnClickListener(onclickSearchByNameButton);
 	}
 
+	//event to handle search button click
 	private OnClickListener onclickSearchByNameButton = new OnClickListener() {
 		public void onClick(View v) {
 			if (!Utils.isNetworkAvailable(mActivity)) {
@@ -63,8 +83,11 @@ public class Activity_FindTrail_ByName extends Activity {
 			Editable edSearchText = etSearchByName.getText();
 			String sSearchText = edSearchText.toString();
 			sSearchText = sSearchText.trim();
+			
+			//do we have a trail name to look for?
 			if (sSearchText.compareTo("") != 0 && mActivity != null) {
 
+				//display progress dialog while we contact clevertrail.com
 				mActivity.mPD = ProgressDialog.show(mActivity, "",
 						getString(R.string.progress_contactingclevertrail),
 						true);
@@ -87,11 +110,13 @@ public class Activity_FindTrail_ByName extends Activity {
 		}
 	};
 
+	//function to do the actual api call to clevertrail.com
 	private int submitSearch() {
 		JSONArray jsonArray = null;
 
 		HttpURLConnection urlConnection = null;
 		try {
+			//api call to find trails by name
 			String requestURL = "http://clevertrail.com/ajax/handleGetArticles.php";
 			String sSearch = mActivity.sSearchText;
 			sSearch = sSearch.replace(" ", "%20");
@@ -107,6 +132,7 @@ public class Activity_FindTrail_ByName extends Activity {
 
 			BufferedReader r = new BufferedReader(new InputStreamReader(in));
 			String line;
+			//did we get a match from clevertrail.com?
 			if ((line = r.readLine()) != null) {
 				jsonArray = new JSONArray(line);
 			}
@@ -128,10 +154,12 @@ public class Activity_FindTrail_ByName extends Activity {
 				urlConnection.disconnect();
 		}
 
+		//clear the static object that holds the trails
 		Object_TrailList.clearTrails();
 		if (jsonArray != null && jsonArray.length() > 0) {
 			int len = jsonArray.length();
 			try {
+				//add each trail to the array of trails
 				for (int i = 0; i < len && i < 20; ++i) {
 					JSONObject trail = jsonArray.getJSONObject(i);
 					Object_TrailList.addTrailWithJSON(trail);
@@ -141,6 +169,7 @@ public class Activity_FindTrail_ByName extends Activity {
 			}
 		}
 
+		//prepare the extras before starting the trail list activity
 		int icon = R.drawable.ic_viewtrailtab_details_unselected;
 		Intent i = new Intent(mActivity, Activity_ListTrails.class);
 		i.putExtra("icon", icon);

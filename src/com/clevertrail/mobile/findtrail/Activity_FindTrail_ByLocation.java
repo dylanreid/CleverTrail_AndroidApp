@@ -1,3 +1,20 @@
+/* 
+	Copyright (C) 2012 Dylan Reid
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package com.clevertrail.mobile.findtrail;
 
 import java.io.BufferedInputStream;
@@ -40,6 +57,9 @@ import com.clevertrail.mobile.R;
 import com.clevertrail.mobile.utils.TitleBar;
 import com.clevertrail.mobile.utils.Utils;
 
+//an activity to find trails by location:
+//1) user can search for trails nearby him (by gps)
+//2) user can search by city using geocoding from google maps
 public class Activity_FindTrail_ByLocation extends Activity {
 
 	private Spinner m_cbFindTrailByLocationProximity;
@@ -53,20 +73,22 @@ public class Activity_FindTrail_ByLocation extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		// Register the listener with the Location Manager to receive location
-		// updates
+		//register the listener with the Location Manager to receive location updates
 		locationManager = (LocationManager) this
 				.getSystemService(Context.LOCATION_SERVICE);
 		locationManager.requestLocationUpdates(
 				LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 
+		//set the title bar
 		TitleBar.setCustomTitleBar(this, R.layout.findtrail_bylocation,
 				getString(R.string.title_findtrails), R.drawable.ic_viewtrailtab_map_unselected);
 
 		mActivity = this;
 
-		createComboBox();
+		//create the search proximity combo box
+		createProximityComboBox();
 
+		//register radio button events
 		RadioButton rbCity = (RadioButton) findViewById(R.id.rbFindTrailByLocationCity);
 		rbCity.setOnClickListener(onclickRBCity);
 
@@ -95,7 +117,8 @@ public class Activity_FindTrail_ByLocation extends Activity {
 		}
 	};
 
-	private void createComboBox() {
+	//dynamically build the proximity combo box
+	private void createProximityComboBox() {
 		m_cbFindTrailByLocationProximity = (Spinner) findViewById(R.id.cbFindTrailProximity);
 		m_adapterForSpinner = new ArrayAdapter(this,
 				android.R.layout.simple_spinner_item);
@@ -112,14 +135,17 @@ public class Activity_FindTrail_ByLocation extends Activity {
 		m_cbFindTrailByLocationProximity.setSelection(2);
 	}
 
+	//event when the Search button is clicked - find trails from clevertrail.com
 	private OnClickListener onclickSearch = new OnClickListener() {
 		public void onClick(View v) {
+			//show progress dialog
 			mActivity.mPD = ProgressDialog.show(mActivity, "",
 					getString(R.string.progress_contactingclevertrail), true);
 			new Thread(new Runnable() {
 				public void run() {
 					int error = submitSearch();
 					mPD.dismiss();
+					//show any errors in communicating with the server
 					Utils.showMessage(mActivity, error);						
 					return;
 				}
@@ -127,6 +153,7 @@ public class Activity_FindTrail_ByLocation extends Activity {
 		}
 	};
 
+	//function to find trails from the server
 	//return error code if there was one
 	private int submitSearch() {
 		double dSearchLat = 0;
@@ -150,14 +177,17 @@ public class Activity_FindTrail_ByLocation extends Activity {
 				return R.string.error_currentlocationnotfound;
 			}
 		} else {
+			//searching by city
 			EditText etCity = (EditText) findViewById(R.id.txtFindTrailByLocationCity);
 			if (etCity != null) {
 				String sCity = etCity.getText().toString();
 				if (sCity.compareTo("") != 0) {
+					//get the json info about the location from google maps
 					JSONObject json = getLocationInfo(sCity);
 					if (json == null) {
 						return R.string.error_couldnotconnecttogooglemaps;
 					} else {
+						//get the lat/lng from the geocoding result from google maps
 						Point pt = getLatLong(json);
 						if (pt != null) {
 							dSearchLat = pt.dLat;
@@ -173,6 +203,7 @@ public class Activity_FindTrail_ByLocation extends Activity {
 			}
 		}
 
+		//find out how far the search radius will be
 		int nProximityPos = m_cbFindTrailByLocationProximity
 				.getSelectedItemPosition();
 		switch (nProximityPos) {
@@ -197,6 +228,7 @@ public class Activity_FindTrail_ByLocation extends Activity {
 		JSONArray trailListJSON = fetchTrailListJSON(dSearchLat, dSearchLong,
 				dSearchDistance);
 
+		//do we have a trails that fit the criteria?
 		if (trailListJSON != null && trailListJSON.length() > 0) {
 			int len = trailListJSON.length();
 
@@ -219,18 +251,21 @@ public class Activity_FindTrail_ByLocation extends Activity {
 		return 0;
 	}
 
+	//event to toggle between search options
 	private OnClickListener onclickRBCity = new OnClickListener() {
 		public void onClick(View v) {
 			toggleRadiobuttons(false);
 		}
 	};
 
+	//event to toggle between search options
 	private OnClickListener onclickRBProximity = new OnClickListener() {
 		public void onClick(View v) {
 			toggleRadiobuttons(true);
 		}
 	};
 
+	//enable or disable depending on which radio button is selected
 	private void toggleRadiobuttons(boolean bProximity) {
 
 		RadioButton rbProximity = (RadioButton) findViewById(R.id.rbFindTrailByLocationProximity);
@@ -242,13 +277,16 @@ public class Activity_FindTrail_ByLocation extends Activity {
 
 	}
 
+	//function to contact google maps and get a lat/lng from the input address
 	public JSONObject getLocationInfo(String address) {
 		StringBuilder stringBuilder = new StringBuilder();
 		try {
 
+			//prepare the address
 			address = address.trim();
 			address = address.replaceAll(" ", "%20");
 
+			//contact google maps
 			HttpPost httppost = new HttpPost(
 					"http://maps.google.com/maps/api/geocode/json?address="
 							+ address + "&sensor=false");
@@ -271,6 +309,7 @@ public class Activity_FindTrail_ByLocation extends Activity {
 			return null;
 		}
 
+		//build the response point (lat/lng)
 		JSONObject jsonObject = new JSONObject();
 		try {
 			jsonObject = new JSONObject(stringBuilder.toString());
@@ -282,6 +321,7 @@ public class Activity_FindTrail_ByLocation extends Activity {
 		return jsonObject;
 	}
 
+	//function to parse a json object response from google maps to get a point
 	public Point getLatLong(JSONObject jsonObject) {
 
 		Double lon = new Double(0);
@@ -292,6 +332,7 @@ public class Activity_FindTrail_ByLocation extends Activity {
 			if (sStatus.compareTo("OK") != 0)
 				return null;
 
+			//look into the json for the lat/long
 			lon = ((JSONArray) jsonObject.get("results")).getJSONObject(0)
 					.getJSONObject("geometry").getJSONObject("location")
 					.getDouble("lng");
@@ -309,6 +350,7 @@ public class Activity_FindTrail_ByLocation extends Activity {
 		return new Point(lat, lon);
 	}
 
+	//wrapper class to hold a lat/long
 	private class Point {
 
 		public Point(double lat, double lng) {
@@ -320,12 +362,15 @@ public class Activity_FindTrail_ByLocation extends Activity {
 		public double dLng;
 	}
 
+	//function to contact clevertrail.com to return trails within the
+	//search radius of the given lat/long
 	protected JSONArray fetchTrailListJSON(double dSearchLat,
 			double dSearchLong, double dSearchDistance) {
 		JSONArray returnJSON = null;
 
 		HttpURLConnection urlConnection = null;
 		try {
+			//set up the api call
 			String params = "lat=" + dSearchLat + "&lng=" + dSearchLong
 					+ "&dist=" + dSearchDistance;
 			String requestURL = "http://clevertrail.com/ajax/handleGetArticles.php?"
@@ -339,6 +384,8 @@ public class Activity_FindTrail_ByLocation extends Activity {
 
 			BufferedReader r = new BufferedReader(new InputStreamReader(in));
 			String line;
+			
+			//did we get a response with trails in it?
 			if ((line = r.readLine()) != null) {
 				returnJSON = new JSONArray(line);
 			}

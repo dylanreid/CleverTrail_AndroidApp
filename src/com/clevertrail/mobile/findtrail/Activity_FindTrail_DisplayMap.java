@@ -1,3 +1,20 @@
+/* 
+	Copyright (C) 2012 Dylan Reid
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package com.clevertrail.mobile.findtrail;
 
 import java.util.List;
@@ -17,6 +34,7 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
+//a class to display a google map of trails found during a search
 public class Activity_FindTrail_DisplayMap extends MapActivity {
 
 	MapView mapView;
@@ -27,9 +45,11 @@ public class Activity_FindTrail_DisplayMap extends MapActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		//create the titlebar
 		TitleBar.setCustomTitleBar(this, R.layout.findtrail_displaymap,
 				getString(R.string.title_foundtrails), R.drawable.ic_viewtrailtab_map_unselected);
 
+		//create the map and the found trailheads (markers)
 		createMap();
 		createMarkers();
 	}
@@ -43,6 +63,8 @@ public class Activity_FindTrail_DisplayMap extends MapActivity {
 	private void createMarkers() {
 		if (mapView == null)
 			return;
+		
+		//return immediately if there are no trails
 		if (Object_TrailList.arTrails == null
 				|| Object_TrailList.arTrails.size() <= 0)
 			return;
@@ -52,12 +74,15 @@ public class Activity_FindTrail_DisplayMap extends MapActivity {
 		
 		int nMaxLat = 0, nMinLat = 0, nMaxLng = 0, nMinLng = 0;
 
+		//iterate through all the found trails and keep track of the max and min
+		//lat/lng we have so we can zoom to the correct level in the google map
 		for (int i = 0; i < Object_TrailList.arTrails.size(); i++) {
 			Object_TrailItem trail = Object_TrailList.arTrails.get(i);
 			
 			int nLat = (int) (trail.mTrailheadLat * 1E6);
 			int nLng = (int) (trail.mTrailheadLng * 1E6);
 
+			//keep track of the max/min lat/lng for later
 			if (i == 0) {
 				nMaxLat = nLat;
 				nMinLat = nLat;
@@ -72,6 +97,7 @@ public class Activity_FindTrail_DisplayMap extends MapActivity {
 
 			GeoPoint point = new GeoPoint(nLat, nLng);
 
+			//set up the marker's information
 			String sDescription = "";
 			if (trail.sDifficulty.compareTo("") != 0){
 				sDescription = sDescription.concat("Difficulty: " + trail.sDifficulty);
@@ -97,6 +123,7 @@ public class Activity_FindTrail_DisplayMap extends MapActivity {
 				sDescription = sDescription.concat("Nearest City: " + trail.sNearestCity);
 			}
 
+			//add the marker to the overlay
 			OverlayItem overlayItem = new OverlayItem(point, trail.sName,
 					sDescription);
 
@@ -118,6 +145,8 @@ public class Activity_FindTrail_DisplayMap extends MapActivity {
 		} else {
 			mc.setZoom(10);
 		}
+		
+		//now reposition one last time
 		mc.animateTo(new GeoPoint((nMaxLat + nMinLat) / 2,
 				(nMaxLng + nMinLng) / 2));
 	}
