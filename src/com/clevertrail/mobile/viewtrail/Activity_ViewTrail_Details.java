@@ -1,3 +1,21 @@
+/* 
+	Copyright (C) 2012 Dylan Reid
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+
 package com.clevertrail.mobile.viewtrail;
 
 import android.app.Activity;
@@ -13,15 +31,15 @@ import com.clevertrail.mobile.R.id;
 import com.clevertrail.mobile.R.layout;
 import com.clevertrail.mobile.utils.ImageLoader;
 
-public class Activity_ViewTrail_Details extends Activity {
-	
-	
+//class for the details tab of a trail
+public class Activity_ViewTrail_Details extends Activity {	
 
 	// when this activity starts, fill in the text from the clever trail article
 	// being viewed
 	public void onStart() {
 		super.onStart();
 
+		//from the trail object, fill in all the section information
 		TextView tvOverview = (TextView) findViewById(R.id.txtOverview);
 		tvOverview.setText(Object_TrailArticle.sOverview);
 		TextView tvDirections = (TextView) findViewById(R.id.txtDirections);
@@ -44,6 +62,7 @@ public class Activity_ViewTrail_Details extends Activity {
 
 		setContentView(R.layout.viewtrail_details);
 
+		//register clicking events
 		Button btnOverview = (Button) findViewById(R.id.btnOverview);
 		btnOverview.setOnClickListener(onclickOverviewButton);
 		Button btnDirections = (Button) findViewById(R.id.btnDirections);
@@ -147,6 +166,7 @@ public class Activity_ViewTrail_Details extends Activity {
 		}
 	}
 
+	//event to either collapse or expand all sections
 	private OnClickListener onclickExpandButton = new OnClickListener() {
 		public void onClick(View v) {
 			Button btnExpand1 = (Button) findViewById(R.id.btnExpandCollapse1);
@@ -162,6 +182,7 @@ public class Activity_ViewTrail_Details extends Activity {
 					btnExpand2.setText("Collapse All");
 				}
 
+				//call function for each of the sections to either display or hide
 				setSectionButtonState(
 						(TextView) findViewById(R.id.txtOverview),
 						(Button) findViewById(R.id.btnOverview), nSectionState);

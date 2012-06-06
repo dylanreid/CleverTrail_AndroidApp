@@ -1,3 +1,20 @@
+/* 
+	Copyright (C) 2012 Dylan Reid
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package com.clevertrail.mobile.viewtrail;
 
 import java.io.BufferedInputStream;
@@ -23,17 +40,22 @@ import com.clevertrail.mobile.Database_SavedTrails;
 import com.clevertrail.mobile.R;
 import com.clevertrail.mobile.utils.Utils;
 
+//a wrapper class to hold a trail article's information
 public class Object_TrailArticle {
 
+	//function to download all the trail article's information
 	public static void loadTrailArticle(Activity activity, String sTrailName) {
 		mActivity = activity;
 		sName = sTrailName;
+		// show a progress dialog
 		mPD = ProgressDialog.show(activity, "",
 				activity.getString(R.string.progress_loading) + " " + sTrailName,
 				true);
 
+		//spin off a thread to do the actual download of the trail data
 		new Thread(new Runnable() {
 			public void run() {
+				//call helper function which downloads data
 				int error = Object_TrailArticle.loadTrailArticle_helper(
 						mActivity, sName);
 				mPD.dismiss();
@@ -43,13 +65,16 @@ public class Object_TrailArticle {
 		}).start();
 	}
 
+	//helper function to download the trail article data
 	private static int loadTrailArticle_helper(Activity activity,
 			String sTrailName) {
 
 		String sResponseLine = "";
+		//sanity check
 		if (sTrailName == null || sTrailName == "")
 			return R.string.error_notrailname;
 
+		//connect to clevertrail.com to get trail article
 		HttpURLConnection urlConnection = null;
 		try {
 			String requestURL = String
@@ -64,6 +89,7 @@ public class Object_TrailArticle {
 
 			BufferedReader r = new BufferedReader(new InputStreamReader(in));
 
+			//trail article in json format
 			sResponseLine = r.readLine();
 
 		} catch (MalformedURLException e) {
@@ -90,6 +116,7 @@ public class Object_TrailArticle {
 			return R.string.error_corrupttrailinfo;
 		}
 
+		//now that we have the latest trail information, mark it as unsaved
 		Object_TrailArticle.bSaved = false;
 
 		// if json is null, we might not have internet activity so check saved
@@ -116,6 +143,7 @@ public class Object_TrailArticle {
 			Object_TrailArticle.createFromJSON(sTrailName, json);
 			Object_TrailArticle.jsonText = sResponseLine;
 
+			//after loading the data, launch the activity to actually view the trail
 			Intent i = new Intent(mActivity, Activity_ViewTrail.class);
 			mActivity.startActivity(i);
 
@@ -124,10 +152,12 @@ public class Object_TrailArticle {
 		return R.string.error_corrupttrailinfo;
 	}
 
+	//function to load the data given a json object
 	public static void createFromJSON(String name, JSONObject json) {
 
 		try {
 			if (json != null) {
+				//clear any existing data before loading in a new trail
 				Object_TrailArticle.clearData();
 
 				jsonSaved = json;
@@ -163,6 +193,7 @@ public class Object_TrailArticle {
 					}
 				}
 
+				//load all the data from the sections
 				Object_TrailArticle.sOverview = Object_TrailArticle
 						.urlDecode(json.getString("overview"));
 				Object_TrailArticle.sDirections = Object_TrailArticle
@@ -178,6 +209,7 @@ public class Object_TrailArticle {
 				Object_TrailArticle.sMisc = Object_TrailArticle.urlDecode(json
 						.getString("misc"));
 
+				//load all the data from the stats
 				Object_TrailArticle.mImage = new Object_TrailPhoto();
 				Object_TrailArticle.mImage.mURL = Object_TrailArticle
 						.urlDecode(json.getString("image"));
@@ -227,6 +259,7 @@ public class Object_TrailArticle {
 				Object_TrailArticle.mTrailUse[9] = (json.getString("family")
 						.compareTo("1") == 0);
 
+				//load the map data (trailheads, pois, trail ends, zoom, center lat/lng, maptype)
 				String jsonMapString = json.getString("jsonMapdata");
 				if (jsonMapString.compareTo("") != 0) {
 					JSONObject jsonMapData = new JSONObject(jsonMapString);
@@ -241,6 +274,7 @@ public class Object_TrailArticle {
 						Object_TrailArticle.sMapType = jsonMapData
 								.getString("mapType");
 
+						//load in the markers
 						JSONArray arMarkers = jsonMapData
 								.getJSONArray("markerLats");
 						for (int i = 0; i < arMarkers.length(); i++) {
@@ -278,6 +312,7 @@ public class Object_TrailArticle {
 		return sText;
 	}
 
+	//function to clear all the member data objects
 	public static void clearData() {
 		Object_TrailArticle.sName = "";
 

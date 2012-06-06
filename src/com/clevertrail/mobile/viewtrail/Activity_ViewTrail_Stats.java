@@ -1,3 +1,20 @@
+/* 
+	Copyright (C) 2012 Dylan Reid
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package com.clevertrail.mobile.viewtrail;
 
 import android.app.Activity;
@@ -12,6 +29,7 @@ import android.widget.TextView;
 import com.clevertrail.mobile.R;
 import com.clevertrail.mobile.utils.ImageLoader;
 
+//activity to display stats for a trail
 public class Activity_ViewTrail_Stats extends Activity {
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -23,6 +41,7 @@ public class Activity_ViewTrail_Stats extends Activity {
 	public void onStart() {
 		super.onStart();
 
+		//load all the appropriate stats
 		TextView tvName = (TextView) findViewById(R.id.txtStatsName);
 		tvName.setText(Object_TrailArticle.sName);
 		TextView tvDistance = (TextView) findViewById(R.id.txtDistance);
@@ -46,9 +65,11 @@ public class Activity_ViewTrail_Stats extends Activity {
 
 		ImageLoader imageLoader = new ImageLoader(getApplicationContext());
 		ImageView image = (ImageView) findViewById(R.id.mainimage);
+		//load the main image
 		if (Object_TrailArticle.mImage != null && Object_TrailArticle.mImage.mURL.compareTo("") != 0)
 			imageLoader.DisplayImage(Object_TrailArticle.mImage.mURL, image);
 
+		//image credit if there is one
 		if (Object_TrailArticle.sImageCredit.compareTo("") != 0) {
 			TextView tvImageCredit = (TextView) findViewById(R.id.txtImageCredit);
 			tvImageCredit.setText(Object_TrailArticle.sImageCredit);
@@ -56,6 +77,7 @@ public class Activity_ViewTrail_Stats extends Activity {
 			tvImageCreditLabel.setVisibility(View.VISIBLE);
 		}
 
+		//add the trail use icons
 		LinearLayout llTrailUse = (LinearLayout) this
 				.findViewById(R.id.llTrailUse);
 		llTrailUse.removeAllViews();
@@ -102,6 +124,7 @@ public class Activity_ViewTrail_Stats extends Activity {
 
 	}
 
+	//helper function to add the trail use icon
 	private void addTrailUse(LinearLayout ll, int icon) {
 		if (ll != null && icon > 0) {
 			ImageView ivUse;

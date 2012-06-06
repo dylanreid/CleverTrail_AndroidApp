@@ -1,3 +1,20 @@
+/* 
+	Copyright (C) 2012 Dylan Reid
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package com.clevertrail.mobile.viewtrail;
 
 import java.io.File;
@@ -27,6 +44,7 @@ import com.clevertrail.mobile.utils.FileCache;
 import com.clevertrail.mobile.utils.ImageLoader;
 import com.clevertrail.mobile.utils.Utils;
 
+//activity to save a trail to the internal memory of the device
 public class Activity_ViewTrail_Save extends Activity {
 
 	private Database_SavedTrails db;
@@ -64,6 +82,7 @@ public class Activity_ViewTrail_Save extends Activity {
 	public void onResume() {
 		super.onResume();
 
+		//get the json information from the database for the trail
 		String jsonString = "";
 		if (db != null) {
 			db.openToRead();
@@ -71,6 +90,7 @@ public class Activity_ViewTrail_Save extends Activity {
 			db.close();
 		}
 
+		//determine if the trail is already saved or not
 		mSaved = (jsonString.compareTo("") != 0);
 
 		// draw the correct state
@@ -80,6 +100,7 @@ public class Activity_ViewTrail_Save extends Activity {
 	public void updateView() {
 		TextView tvCurrentStatus = (TextView) findViewById(R.id.txtSaveStatus);
 		Button btnSaveTrail = (Button) findViewById(R.id.btnSaveTrail);
+		//if already saved in the database, give the option to un-save and vice versa
 		if (mSaved) {
 			tvCurrentStatus.setTextColor(Color.GREEN);
 			tvCurrentStatus.setText("Saved");
@@ -91,6 +112,7 @@ public class Activity_ViewTrail_Save extends Activity {
 		}
 	}
 
+	//function to delete a trail from the database
 	private void deleteTrail() {
 		// delete trail
 		db.openToWrite();
@@ -98,7 +120,7 @@ public class Activity_ViewTrail_Save extends Activity {
 		db.close();
 		FileCache fc = new FileCache(this.getApplicationContext());
 
-		// delete files
+		// delete all the photos for the trail as well
 		ArrayList<Object_TrailPhoto> photos = Object_TrailArticle.arPhotos;
 		for (int i = 0; i < photos.size(); i++) {
 			Object_TrailPhoto photo = photos.get(i);
@@ -110,9 +132,11 @@ public class Activity_ViewTrail_Save extends Activity {
 		updateView();
 	}
 
+	//event to jump to the saved trails screen
 	private OnClickListener onclickGotoSavedTrails = new OnClickListener() {
 		public void onClick(View v) {
 
+			//display a progress dialog
 			mActivity.mLoadingDialog = ProgressDialog.show(mActivity, "",
 					getString(R.string.progress_loadingsavedtrails), true);
 
@@ -120,6 +144,7 @@ public class Activity_ViewTrail_Save extends Activity {
 				public void run() {
 					int error = Database_SavedTrails.openSavedTrails(mActivity);
 					mLoadingDialog.dismiss();
+					//display an error message if one exists
 					Utils.showMessage(mActivity, error);
 					return;
 				}
@@ -128,14 +153,17 @@ public class Activity_ViewTrail_Save extends Activity {
 		}
 	};
 
+	//event for clicking the save button
 	private OnClickListener onclickSaveTrailButton = new OnClickListener() {
 		public void onClick(View v) {
 			if (Object_TrailArticle.sName != "") {
 				Button btnSaveTrail = (Button) findViewById(R.id.btnSaveTrail);
 
+				//are we deleting or saving?
 				if (btnSaveTrail.getText() == "Un-Save This Trail") {
 					deleteTrail();
 				} else {
+					//display a progress dialog while we do the save
 					mSavingDialog = new ProgressDialog(v.getContext());
 					mSavingDialog.setMessage(getString(R.string.progress_savingtrail));
 					mSavingDialog.setIndeterminate(false);
@@ -160,6 +188,7 @@ public class Activity_ViewTrail_Save extends Activity {
 		}
 	};
 
+	// a helper class to do the actual save as a separate thread
 	class SaveTrail implements Runnable {
 
 		Context mContext;
@@ -174,6 +203,7 @@ public class Activity_ViewTrail_Save extends Activity {
 			if (Object_TrailArticle.jsonSaved != null) {
 				mViewTrailSaveActivity.mSaved = true;
 				db.openToWrite();
+				//save the json for the given trail
 				db.insert(Object_TrailArticle.sName,
 						Object_TrailArticle.jsonText);
 				db.close();
@@ -181,12 +211,15 @@ public class Activity_ViewTrail_Save extends Activity {
 				boolean bSavePhotos = false;
 				CheckBox cbSavePhotos = (CheckBox) findViewById(R.id.chkSavePhotos);
 				bSavePhotos = cbSavePhotos.isChecked();
+				//are we also saving the photos?
 				if (bSavePhotos) {
 					ImageLoader imageLoader = new ImageLoader(mContext);
 					ArrayList<Object_TrailPhoto> photos = Object_TrailArticle.arPhotos;
 
+					//go through the photos and save them to internal memory
 					for (int i = 0; i < photos.size(); i++) {
 						int incrementSize = 100 / photos.size();
+						//increment the progress dialog
 						pdHandler.sendEmptyMessage(incrementSize);
 
 						Object_TrailPhoto photo = photos.get(i);
@@ -203,10 +236,12 @@ public class Activity_ViewTrail_Save extends Activity {
 				}
 			}
 
+			//finish the progress dialog
 			pdHandler.sendEmptyMessage(0);
 		}
 	}
 
+	// a handler for a progress dialog while we save
 	final Handler pdHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			if (msg.what == 0) {
