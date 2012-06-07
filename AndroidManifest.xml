@@ -28,7 +28,8 @@
         
         <activity android:name=".findtrail.Activity_FindTrail_ByName" >                        
         </activity>
-        <activity android:name=".findtrail.Activity_FindTrail_ByLocation" >            
+        <activity android:name=".findtrail.Activity_FindTrail_ByLocation" >    
+            android:windowSoftInputMode="adjustResize"        
         </activity>
         <activity android:name=".findtrail.Activity_FindTrail_DisplayMap" >
         </activity>

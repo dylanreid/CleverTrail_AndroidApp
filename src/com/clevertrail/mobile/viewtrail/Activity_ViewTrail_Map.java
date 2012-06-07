@@ -138,17 +138,20 @@ public class Activity_ViewTrail_Map extends MapActivity {
 				nMaxLng = Math.max(nLng, nMaxLng);
 				nMinLng = Math.min(nLng, nMinLng);
 			}
+			
+			String sText = sType;
+			sText = sText.concat("\n" +"[Tap For Directions]");
 
 			//create the marker
 			GeoPoint point = new GeoPoint(nLat, nLng);
-			OverlayItem overlayItem = new OverlayItem(point, sType,
+			OverlayItem overlayItem = new OverlayItem(point, sText,
 					Object_TrailArticle.mMarkerDescs[i]);
 
 			//add the new marker to the correct overlay category
 			if (sType.compareTo("Trailhead") == 0) {
 				if (overlayTrailhead == null)
 					overlayTrailhead = new MapMarkerOverlay(drawTrailhead,
-							mapView);
+							mapView, this);
 
 				// add the overlay
 				overlayTrailhead.addOverlay(overlayItem);
@@ -156,7 +159,7 @@ public class Activity_ViewTrail_Map extends MapActivity {
 
 			if (sType.compareTo("Point Of Interest") == 0) {
 				if (overlayPoi == null)
-					overlayPoi = new MapMarkerOverlay(drawPoi, mapView);
+					overlayPoi = new MapMarkerOverlay(drawPoi, mapView, this);
 
 				// add the overlay
 				overlayPoi.addOverlay(overlayItem);
@@ -165,7 +168,7 @@ public class Activity_ViewTrail_Map extends MapActivity {
 			if (sType.compareTo("Trailend") == 0) {
 				if (overlayTrailend == null)
 					overlayTrailend = new MapMarkerOverlay(drawTrailend,
-							mapView);
+							mapView, this);
 
 				// add to the overlay
 				overlayTrailend.addOverlay(overlayItem);

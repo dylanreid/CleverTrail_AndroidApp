@@ -46,6 +46,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -72,12 +73,13 @@ public class Activity_FindTrail_ByLocation extends Activity {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		//prevent automatic popup of soft keyboard
+		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 		//register the listener with the Location Manager to receive location updates
 		locationManager = (LocationManager) this
-				.getSystemService(Context.LOCATION_SERVICE);
-		locationManager.requestLocationUpdates(
-				LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+				.getSystemService(Context.LOCATION_SERVICE);		
 
 		//set the title bar
 		TitleBar.setCustomTitleBar(this, R.layout.findtrail_bylocation,
@@ -97,6 +99,21 @@ public class Activity_FindTrail_ByLocation extends Activity {
 
 		Button btnSearch = (Button) findViewById(R.id.btnSearchByLocation);
 		btnSearch.setOnClickListener(onclickSearch);
+	}
+	
+	//on resume, listen for location while in this activity
+	public void onResume(){
+		super.onResume();
+		
+		locationManager.requestLocationUpdates(
+				LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+	}
+	
+	//on pause, stop listening for location updates
+	public void onPause(){
+		super.onPause();
+		
+		locationManager.removeUpdates(locationListener);
 	}
 
 	// Define a listener that responds to location updates
